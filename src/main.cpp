@@ -7,10 +7,13 @@
 //
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "graphic/gameworlditem.h"
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+	qmlRegisterType<LFD::slagavallen::GameWorldItem>("Slagavallen", 1, 0, "GameWorldItem");
 
 	QGuiApplication app(argc, argv);
 
