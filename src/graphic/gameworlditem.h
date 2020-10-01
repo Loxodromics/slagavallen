@@ -15,6 +15,7 @@ namespace LFD {
 namespace slagavallen {
 
 class TerrainNode;
+class BackgroundNode;
 
 class GameWorldItem : public QQuickItem {
 	Q_OBJECT
@@ -35,6 +36,7 @@ private:
 class GameWorldItemNode : public QSGNode {
 public:
 	TerrainNode* m_terrain;
+	BackgroundNode* m_background;
 };
 
 }

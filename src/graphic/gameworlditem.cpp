@@ -8,6 +8,7 @@
 
 #include "gameworlditem.h"
 #include "terrainnode.h"
+#include "backgroundnode.h"
 
 namespace LFD {
 
@@ -40,13 +41,16 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 	if (!gameWorldItemNode) {
 		gameWorldItemNode = new GameWorldItemNode();
 
+		gameWorldItemNode->m_background = new BackgroundNode();
 		gameWorldItemNode->m_terrain = new TerrainNode();
 
+		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_background);
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_terrain);
 	}
 
 	if (m_geometryChanged) {
 		gameWorldItemNode->m_terrain->setRect(rect);
+		gameWorldItemNode->m_background->setRect(rect);
 	}
 
 	m_geometryChanged = false;
