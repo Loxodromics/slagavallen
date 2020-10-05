@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
+#include <QtQuick/QSGGeometryNode>
 
 namespace LFD {
 

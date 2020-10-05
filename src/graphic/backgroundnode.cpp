@@ -21,29 +21,27 @@ BackgroundNode::BackgroundNode()
 	m_material.setColor(Qt::darkBlue);
 }
 
-void BackgroundNode::setRect(const QRectF &rect)
+void BackgroundNode::setRect(const QRectF& rect)
 {
-	QSGGeometry *g = geometry();
+	QSGGeometry* g = geometry();
 
 	g->allocate(4);
-
 
 	float x = rect.x();
 	float y = rect.y();
 	float w = rect.width();
 	float h = rect.height();
 
-	QSGGeometry::Point2D *v = g->vertexDataAsPoint2D();
+	QSGGeometry::Point2D* v = g->vertexDataAsPoint2D();
 	v[0].set(x, y);
 	v[1].set(w, y);
 	v[2].set(w, h);
 	v[3].set(x, h);
 
-
 	// Tell the scenegraph we updated the geometry..
 	markDirty(QSGNode::DirtyGeometry);
 }
 
-} // namespace slagavallen
+}	// namespace slagavallen
 
-} //namespace LFD
+}	// namespace LFD

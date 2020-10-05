@@ -7,19 +7,18 @@
 //
 #pragma once
 
-#include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGFlatColorMaterial>
+#include <QtQuick/QSGGeometryNode>
 
 namespace LFD {
 
 namespace slagavallen {
 
-class TerrainNode : public QSGGeometryNode
-{
+class TerrainNode : public QSGGeometryNode {
 public:
 	TerrainNode();
 
-	void setRect(const QRectF &rect);
+	void setRect(const QRectF& rect);
 
 private:
 	QSGFlatColorMaterial m_material;
@@ -29,4 +28,3 @@ private:
 }
 
 }
-
