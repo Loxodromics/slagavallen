@@ -19,7 +19,7 @@ public:
 	BackgroundNode();
 	void setRect(const QRectF& rect);
 
-private:
+protected:
 	QSGFlatColorMaterial m_material;
 	QSGGeometry m_geometry;
 };
