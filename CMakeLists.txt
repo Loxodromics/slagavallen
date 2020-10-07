@@ -26,25 +26,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
+set(SOURCES
+	src/main.cpp
+	src/graphic/backgroundnode.cpp
+	src/graphic/gameworlditem.cpp
+	src/graphic/terrainnode.cpp
+	qml/qml.qrc)
 
 set(TS_FILES resources/slagavallen_en_001.ts)
+qt5_add_resources(SOURCES resources.qrc)
 
 if(ANDROID)
 	add_library(slagavallen SHARED
-		src/main.cpp
-		src/graphic/backgroundnode.cpp
-		src/graphic/gameworlditem.cpp
-		src/graphic/terrainnode.cpp
-		qml/qml.qrc
+		${SOURCES}
 		${TS_FILES}
 	)
 else()
 	add_executable(slagavallen
-		src/main.cpp
-		src/graphic/backgroundnode.cpp
-		src/graphic/gameworlditem.cpp
-		src/graphic/terrainnode.cpp
-		qml/qml.qrc
+		${SOURCES}
 		${TS_FILES}
 	)
 endif()
