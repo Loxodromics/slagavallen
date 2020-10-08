@@ -9,6 +9,7 @@
 
 #include <QtQuick/QSGFlatColorMaterial>
 #include <QtQuick/QSGGeometryNode>
+#include <QQuickWindow>
 
 namespace LFD {
 
@@ -16,12 +17,12 @@ namespace slagavallen {
 
 class BackgroundNode : public QSGGeometryNode {
 public:
-	BackgroundNode();
+	BackgroundNode(QQuickWindow* window);
 	void setRect(const QRectF& rect);
 
 protected:
-	QSGFlatColorMaterial m_material;
-	QSGGeometry m_geometry;
+//	QSGFlatColorMaterial m_material;
+//	QSGGeometry m_geometry;
 };
 
 }

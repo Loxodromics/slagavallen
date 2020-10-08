@@ -44,7 +44,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 	if (!gameWorldItemNode) {
 		gameWorldItemNode = new GameWorldItemNode();
 
-		gameWorldItemNode->m_background = new BackgroundNode();
+		gameWorldItemNode->m_background = new BackgroundNode(window());
 		gameWorldItemNode->m_terrain = new TerrainNode();
 
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_background);
