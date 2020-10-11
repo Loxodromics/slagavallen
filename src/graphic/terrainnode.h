@@ -7,8 +7,9 @@
 //
 #pragma once
 
-#include <QtQuick/QSGFlatColorMaterial>
+#include <QtQuick/QSGOpaqueTextureMaterial>
 #include <QtQuick/QSGGeometryNode>
+#include <QQuickWindow>
 
 namespace LFD {
 
@@ -16,13 +17,13 @@ namespace slagavallen {
 
 class TerrainNode : public QSGGeometryNode {
 public:
-	TerrainNode();
+	TerrainNode(QQuickWindow* window);
 
 	void setRect(const QRectF& rect);
 
-private:
-	QSGFlatColorMaterial m_material;
-	QSGGeometry m_geometry;
+protected:
+	QSGOpaqueTextureMaterial m_material;
+	QSGGeometry* m_geometry;
 };
 
 }
