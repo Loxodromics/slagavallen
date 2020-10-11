@@ -8,9 +8,9 @@
 #include "backgroundnode.h"
 
 #include <QtCore/QRandomGenerator>
+#include <QtQuick/QQuickWindow>
 #include <QtQuick/QSGSimpleMaterialShader>
 #include <QtQuick/QSGTexture>
-#include <QtQuick/QQuickWindow>
 
 #define NOISE_SIZE 64
 
@@ -18,39 +18,37 @@ namespace LFD {
 
 namespace slagavallen {
 
-struct BackgroundMaterial
-{
-	~BackgroundMaterial() {
-		delete texture;
-	}
+struct BackgroundMaterial {
+	~BackgroundMaterial() { delete texture; }
 
 	QColor color;
-	QSGTexture *texture;
+	QSGTexture* texture;
 };
 
-class BackgroundShader : public QSGSimpleMaterialShader<BackgroundMaterial>
-{
-	static QSGMaterialShader *createShader()
-	{
-		return new BackgroundShader;
-	}
+class BackgroundShader : public QSGSimpleMaterialShader<BackgroundMaterial> {
+	static QSGMaterialShader* createShader() { return new BackgroundShader; }
 
 public:
-	static QSGSimpleMaterial<BackgroundMaterial> *createMaterial()
+	static QSGSimpleMaterial<BackgroundMaterial>* createMaterial()
 	{
 		return new QSGSimpleMaterial<BackgroundMaterial>(createShader);
 	}
 
-
 public:
-	BackgroundShader() {
+	BackgroundShader()
+	{
 		setShaderSourceFile(QOpenGLShader::Vertex, ":/resources/shader/background.vsh");
 		setShaderSourceFile(QOpenGLShader::Fragment, ":/resources/shader/background.fsh");
 	}
 
-	QList<QByteArray> attributes() const override {  return QList<QByteArray>() << "aVertex" << "aTexCoord"; }
+	QList<QByteArray> attributes() const override
+	{
+		return QList<QByteArray>() << "aVertex"
+								   << "aTexCoord";
+	}
 
-	void updateState(const BackgroundMaterial *m, const BackgroundMaterial *) override {
+	void updateState(const BackgroundMaterial* m, const BackgroundMaterial*) override
+	{
 
 		// Set the color
 		program()->setUniformValue(id_color, m->color);
@@ -64,7 +62,8 @@ public:
 		program()->setUniformValue(id_textureSize, QSizeF(1.0 / s.width(), 1.0 / s.height()));
 	}
 
-	void resolveUniforms() override {
+	void resolveUniforms() override
+	{
 		id_texture = program()->uniformLocation("texture");
 		id_textureSize = program()->uniformLocation("textureSize");
 		id_color = program()->uniformLocation("color");
@@ -83,18 +82,18 @@ BackgroundNode::BackgroundNode(QQuickWindow* window)
 {
 	// Make some noise...
 	QImage image(NOISE_SIZE, NOISE_SIZE, QImage::Format_RGB32);
-	uint *data = (uint *) image.bits();
-	for (int i=0; i<NOISE_SIZE * NOISE_SIZE; ++i) {
+	uint* data = (uint*)image.bits();
+	for (int i = 0; i < NOISE_SIZE * NOISE_SIZE; ++i) {
 		uint g = QRandomGenerator::global()->bounded(0xff);
 		data[i] = 0xff000000 | (g << 16) | (g << 8) | g;
 	}
 
-	QSGTexture *t = window->createTextureFromImage(image);
+	QSGTexture* t = window->createTextureFromImage(image);
 	t->setFiltering(QSGTexture::Nearest);
 	t->setHorizontalWrapMode(QSGTexture::Repeat);
 	t->setVerticalWrapMode(QSGTexture::Repeat);
 
-	QSGSimpleMaterial<BackgroundMaterial> *m = BackgroundShader::createMaterial();
+	QSGSimpleMaterial<BackgroundMaterial>* m = BackgroundShader::createMaterial();
 	m->state()->texture = t;
 	m->state()->color = QColor::fromRgbF(0.0, 0.46, 0.75);
 	m->setFlag(QSGMaterial::Blending);
@@ -102,18 +101,17 @@ BackgroundNode::BackgroundNode(QQuickWindow* window)
 	setMaterial(m);
 	setFlag(OwnsMaterial, true);
 
-	QSGGeometry *g = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
+	QSGGeometry* g = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
 	QSGGeometry::updateTexturedRectGeometry(g, QRect(), QRect());
 	setGeometry(g);
 	setFlag(OwnsGeometry, true);
 }
 
-void BackgroundNode::setRect(const QRectF &bounds)
+void BackgroundNode::setRect(const QRectF& bounds)
 {
 	QSGGeometry::updateTexturedRectGeometry(geometry(), bounds, QRectF(0, 0, 1, 1));
 	markDirty(QSGNode::DirtyGeometry);
 }
-
 
 }	// namespace slagavallen
 
