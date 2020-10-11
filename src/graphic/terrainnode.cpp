@@ -19,7 +19,7 @@ TerrainNode::TerrainNode()
 	: m_geometry(QSGGeometry::defaultAttributes_Point2D(), 0)
 {
 	setGeometry(&m_geometry);
-	m_geometry.setDrawingMode(GL_LINES);
+	m_geometry.setDrawingMode(GL_QUADS);
 
 	setMaterial(&m_material);
 	m_material.setColor(Qt::gray);
@@ -34,32 +34,30 @@ void TerrainNode::setRect(const QRectF& rect)
 	int vCount = int((rect.width() - 1) / GRID_SIZE);
 	int hCount = int((rect.height() - 1) / GRID_SIZE);
 
-	int lineCount = vCount + hCount;
+	int segmentsCount = (GRID_SIZE + 1) * (GRID_SIZE + 1)* 4;
+	m_geometry.allocate(segmentsCount);
+	QSGGeometry::Point2D *vertices = m_geometry.vertexDataAsPoint2D();
 
-	QSGGeometry* g = geometry();
 
-	g->allocate(lineCount * 2);
-
-	float x = rect.x();
-	float y = rect.y();
-	float w = rect.width();
-	float h = rect.height();
-
-	QSGGeometry::Point2D* v = g->vertexDataAsPoint2D();
-
-	// Then write the vertical lines
-	for (int i = 0; i < vCount; ++i) {
-		float dx = (i + 1) * GRID_SIZE;
-		v[i * 2].set(dx, y);
-		v[i * 2 + 1].set(dx, y + h);
+	for (int i_v = 0; i_v <= vCount; ++i_v) {
+		for (int i_h = 0; i_h <= hCount; ++i_h) {
+			float dx = i_v * GRID_SIZE;
+			float dy = i_h * GRID_SIZE;
+			int i = (i_v * vCount + i_h);
+			vertices[i * 4].set(dx, dy);
+			vertices[i * 4 + 1].set(dx + GRID_SIZE, dy);
+			vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE);
+			vertices[i * 4 + 3].set(dx, dy + GRID_SIZE);
+		}
 	}
-	v += vCount * 2;
-	// Then write the horizontal lines
-	for (int i = 0; i < hCount; ++i) {
-		float dy = (i + 1) * GRID_SIZE;
-		v[i * 2].set(x, dy);
-		v[i * 2 + 1].set(x + w, dy);
-	}
+
+	// Tell the scenegraph we updated the geometry...
+	markDirty(QSGNode::DirtyGeometry);
+}
+
+void TerrainNode::setOffset(const QPointF& offset)
+{
+	this->m_offset = offset;
 
 	// Tell the scenegraph we updated the geometry..
 	markDirty(QSGNode::DirtyGeometry);
