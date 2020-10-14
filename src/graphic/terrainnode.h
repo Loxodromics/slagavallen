@@ -7,9 +7,9 @@
 //
 #pragma once
 
-#include <QtQuick/QSGOpaqueTextureMaterial>
-#include <QtQuick/QSGGeometryNode>
 #include <QQuickWindow>
+#include <QtQuick/QSGGeometryNode>
+#include <QtQuick/QSGOpaqueTextureMaterial>
 
 namespace LFD {
 
@@ -24,6 +24,9 @@ public:
 protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;
+
+	void drawTile(
+	  unsigned int i_v, unsigned int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices);
 };
 
 }

@@ -38,10 +38,18 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	this->m_material.setTexture(texture);
 }
 
-/*
- * The function hardcodes a fixed set of grid lines and scales
- * those to the bounding rect.
- */
+void LFD::slagavallen::TerrainNode::drawTile(
+  unsigned int i_v, unsigned int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices)
+{
+	float dx = i_v * GRID_SIZE;
+	float dy = i_h * GRID_SIZE;
+	int i = (i_v * vCount + i_h);
+	vertices[i * 4].set(dx, dy, 0.0f, 0.0f);
+	vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, 1.0f, 0.0f);
+	vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE, 1.0f, 1.0f);
+	vertices[i * 4 + 3].set(dx, dy + GRID_SIZE, 0.0f, 1.0f);
+}
+
 void TerrainNode::setRect(const QRectF& rect)
 {
 	int vCount = int((rect.width() - 1) / GRID_SIZE);
@@ -54,13 +62,7 @@ void TerrainNode::setRect(const QRectF& rect)
 
 	for (int i_v = 0; i_v <= vCount; ++i_v) {
 		for (int i_h = 0; i_h <= hCount; ++i_h) {
-			float dx = i_v * GRID_SIZE;
-			float dy = i_h * GRID_SIZE;
-			int i = (i_v * vCount + i_h);
-			vertices[i * 4].set(dx, dy, 0.0f, 0.0f);
-			vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, 1.0f, 0.0f);
-			vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE, 1.0f, 1.0f);
-			vertices[i * 4 + 3].set(dx, dy + GRID_SIZE, 0.0f, 1.0f);
+			drawTile(i_v, i_h, vCount, hCount, vertices);
 		}
 	}
 
@@ -68,13 +70,6 @@ void TerrainNode::setRect(const QRectF& rect)
 	markDirty(QSGNode::DirtyGeometry);
 }
 
-void TerrainNode::setOffset(const QPointF& offset)
-{
-	this->m_offset = offset;
-
-	// Tell the scenegraph we updated the geometry..
-	markDirty(QSGNode::DirtyGeometry);
-}
 }	// namespace slagavallen
 
 }	// namespace LFD
