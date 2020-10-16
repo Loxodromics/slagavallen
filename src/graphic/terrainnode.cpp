@@ -20,13 +20,14 @@ namespace slagavallen {
 
 TerrainNode::TerrainNode(QQuickWindow* window)
 	: m_geometry(nullptr)
+	, m_offset(QPointF(0.0f, 0.0f))
 {
 	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
 	this->setGeometry(m_geometry);
-	m_geometry->setDrawingMode(GL_QUADS);
-	setFlag(OwnsGeometry, true);
+	this->m_geometry->setDrawingMode(GL_QUADS);
+	this->setFlag(OwnsGeometry, true);
 
-	setMaterial(&m_material);
+	this->setMaterial(&m_material);
 
 	QImage image;
 	image.load(":/resources/textures/grass.png");
@@ -38,11 +39,11 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	this->m_material.setTexture(texture);
 }
 
-void LFD::slagavallen::TerrainNode::drawTile(
-  unsigned int i_v, unsigned int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices)
+void LFD::slagavallen::TerrainNode::drawTile(unsigned int i_v, unsigned int i_h, unsigned int vCount, unsigned hCount,
+  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
 {
-	float dx = i_v * GRID_SIZE;
-	float dy = i_h * GRID_SIZE;
+	float dx = i_v * GRID_SIZE + offsetX;
+	float dy = i_h * GRID_SIZE + offsetY;
 	int i = (i_v * vCount + i_h);
 	vertices[i * 4].set(dx, dy, 0.0f, 0.0f);
 	vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, 1.0f, 0.0f);
@@ -56,18 +57,31 @@ void TerrainNode::setRect(const QRectF& rect)
 	int hCount = int((rect.height() - 1) / GRID_SIZE);
 
 	int tilesCount = (GRID_SIZE + 1) * (GRID_SIZE + 1) * 4;
-	m_geometry->allocate(tilesCount);
+	this->m_geometry->allocate(tilesCount);
 
 	QSGGeometry::TexturedPoint2D* vertices = m_geometry->vertexDataAsTexturedPoint2D();
 
 	for (int i_v = 0; i_v <= vCount; ++i_v) {
 		for (int i_h = 0; i_h <= hCount; ++i_h) {
-			drawTile(i_v, i_h, vCount, hCount, vertices);
+			this->drawTile(i_v, i_h, vCount, hCount, vertices, this->m_offset.x(), this->m_offset.y());
 		}
 	}
 
 	// Tell the scenegraph we updated the geometry...
-	markDirty(QSGNode::DirtyGeometry);
+	this->markDirty(QSGNode::DirtyGeometry);
+	qDebug() << "TerrainNode::setRect";
+}
+
+void TerrainNode::setOffset(const QPointF& offset)
+{
+	this->m_offset = offset;
+	qDebug() << "offset: " << offset;
+}
+
+void TerrainNode::addOffset(const QPointF& offset)
+{
+	this->m_offset += offset;
+	qDebug() << "offset: " << offset;
 }
 
 }	// namespace slagavallen

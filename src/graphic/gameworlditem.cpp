@@ -17,7 +17,8 @@ namespace LFD {
 namespace slagavallen {
 
 GameWorldItem::GameWorldItem()
-	: m_geometryChanged(false)
+	: m_geometryChanged(false),
+	  m_gameWorldItemNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
 }
@@ -58,6 +59,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 
 	m_geometryChanged = false;
 
+	this->m_gameWorldItemNode = gameWorldItemNode;
 	return gameWorldItemNode;
 }
 
@@ -70,18 +72,25 @@ void GameWorldItem::mouseDoubleClickEvent(QMouseEvent* event)
 void GameWorldItem::mouseMoveEvent(QMouseEvent* event)
 {
 	qDebug() << event;
-//	update();	// changing an attribute of the qquickitem and updating the scenegraph
+	if (this->m_gameWorldItemNode != nullptr && (event->buttons() & Qt::RightButton) ) {
+		this->m_gameWorldItemNode->m_terrain->addOffset(event->screenPos() - this->m_mouseDownPos);
+		this->m_mouseDownPos = event->screenPos();
+		m_geometryChanged = true;
+		update();	// changing an attribute of the qquickitem and updating the scenegraph
+	}
 }
 
 void GameWorldItem::mousePressEvent(QMouseEvent* event)
 {
 	qDebug() << event;
+	this->m_mouseDownPos = event->screenPos();
 //	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
 void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 {
 	qDebug() << event;
+	this->m_mouseDownPos = QPointF();
 	//	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 

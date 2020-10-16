@@ -16,6 +16,7 @@ namespace slagavallen {
 
 class TerrainNode;
 class BackgroundNode;
+class GameWorldItemNode;
 
 class GameWorldItem : public QQuickItem {
 	Q_OBJECT
@@ -34,8 +35,10 @@ protected:
 
 public slots:
 
-private:
+protected:
 	bool m_geometryChanged;
+	QPointF m_mouseDownPos;
+	GameWorldItemNode* m_gameWorldItemNode;
 };
 
 class GameWorldItemNode : public QSGNode {
