@@ -39,11 +39,12 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	this->m_material.setTexture(texture);
 }
 
-void LFD::slagavallen::TerrainNode::drawTile(unsigned int i_v, unsigned int i_h, unsigned int vCount, unsigned hCount,
+void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
   QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
 {
-	float dx = i_v * GRID_SIZE + offsetX;
-	float dy = i_h * GRID_SIZE + offsetY;
+	float dx = (i_v * GRID_SIZE + ((int)offsetX % GRID_SIZE)) - GRID_SIZE;
+	float dy = (i_h * GRID_SIZE + ((int)offsetY % GRID_SIZE)) - GRID_SIZE;
+
 	int i = (i_v * vCount + i_h);
 	vertices[i * 4].set(dx, dy, 0.0f, 0.0f);
 	vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, 1.0f, 0.0f);
@@ -53,8 +54,9 @@ void LFD::slagavallen::TerrainNode::drawTile(unsigned int i_v, unsigned int i_h,
 
 void TerrainNode::setRect(const QRectF& rect)
 {
-	int vCount = int((rect.width() - 1) / GRID_SIZE);
-	int hCount = int((rect.height() - 1) / GRID_SIZE);
+	/// + 2 for adding a tile on both ends
+	int vCount = int((rect.width() - 1) / GRID_SIZE) + 2;
+	int hCount = int((rect.height() - 1) / GRID_SIZE) + 2;
 
 	int tilesCount = (GRID_SIZE + 1) * (GRID_SIZE + 1) * 4;
 	this->m_geometry->allocate(tilesCount);
