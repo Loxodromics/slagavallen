@@ -12,7 +12,6 @@
 #include <QtQuick/QSGTexture>
 
 #define GRID_SIZE 32
-#define TEXTURE_SIZE 64
 
 namespace LFD {
 
@@ -45,11 +44,32 @@ void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCou
 	float dx = (i_v * GRID_SIZE + ((int)offsetX % GRID_SIZE)) - GRID_SIZE;
 	float dy = (i_h * GRID_SIZE + ((int)offsetY % GRID_SIZE)) - GRID_SIZE;
 
+	Tile tile;
+	tile.terrainType = TerrainType::Grass2;
+	QRectF textureCoordinates = this->textureCoordinates(tile);
 	int i = (i_v * vCount + i_h);
-	vertices[i * 4].set(dx, dy, 0.0f, 0.0f);
-	vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, 1.0f, 0.0f);
-	vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE, 1.0f, 1.0f);
-	vertices[i * 4 + 3].set(dx, dy + GRID_SIZE, 0.0f, 1.0f);
+	vertices[i * 4].set(dx, dy, textureCoordinates.x(), textureCoordinates.y());
+	vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, textureCoordinates.x() + textureCoordinates.width(), textureCoordinates.y());
+	vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE, textureCoordinates.x() + textureCoordinates.width(), textureCoordinates.y() + textureCoordinates.height());
+	vertices[i * 4 + 3].set(dx, dy + GRID_SIZE,textureCoordinates.x(), textureCoordinates.y() + textureCoordinates.height());
+}
+
+QRectF TerrainNode::textureCoordinates(Tile& tile)
+{
+	switch (tile.terrainType) {
+	case TerrainType::Grass0:
+		return QRectF(0.0f, 0.0f, 0.5f, 0.5f);
+		break;
+	case TerrainType::Grass1:
+		return QRectF(0.5f, 0.0, 0.5f, 0.5f);
+		break;
+	case TerrainType::Grass2:
+		return QRectF(0.0f, 0.5f, 0.5f, 0.5f);
+		break;
+	case TerrainType::Grass3:
+		return QRectF(0.5f, 0.5f, 0.5f, 0.5f);
+		break;
+	}
 }
 
 void TerrainNode::setRect(const QRectF& rect)
