@@ -81,12 +81,7 @@ private:
 BackgroundNode::BackgroundNode(QQuickWindow* window)
 {
 	// Make some noise...
-	QImage image(NOISE_SIZE, NOISE_SIZE, QImage::Format_RGB32);
-	uint* data = (uint*)image.bits();
-	for (int i = 0; i < NOISE_SIZE * NOISE_SIZE; ++i) {
-		uint g = QRandomGenerator::global()->bounded(0xff);
-		data[i] = 0xff000000 | (g << 16) | (g << 8) | g;
-	}
+	QImage image(":/resources/textures/water.png");
 
 	QSGTexture* t = window->createTextureFromImage(image);
 	t->setFiltering(QSGTexture::Nearest);

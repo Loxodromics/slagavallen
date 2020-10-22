@@ -3,5 +3,6 @@
         <file>resources/shader/background.fsh</file>
         <file>resources/shader/background.vsh</file>
         <file>resources/textures/grass.png</file>
+        <file>resources/textures/water.png</file>
     </qresource>
 </RCC>
