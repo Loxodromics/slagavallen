@@ -73,10 +73,12 @@ void GameWorldItem::mouseMoveEvent(QMouseEvent* event)
 {
 	qDebug() << event;
 	if (this->m_gameWorldItemNode != nullptr && (event->buttons() & Qt::RightButton) ) {
-		this->m_gameWorldItemNode->m_terrain->addOffset(event->screenPos() - this->m_mouseDownPos);
-		this->m_mouseDownPos = event->screenPos();
-		m_geometryChanged = true;
-		update();	// changing an attribute of the qquickitem and updating the scenegraph
+		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
+			this->m_gameWorldItemNode->m_terrain->addOffset(event->screenPos() - this->m_mouseDownPos);
+			this->m_mouseDownPos = event->screenPos();
+			this->m_geometryChanged = true;
+			this->update();	// changing an attribute of the qquickitem and updating the scenegraph
+		}
 	}
 }
 
