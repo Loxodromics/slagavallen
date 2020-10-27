@@ -39,10 +39,12 @@ protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;
 	QPointF m_offset;
+	QVector<Tile> m_tiles;
+	unsigned int m_worldSizeX;
+	unsigned int m_worldSizeY;
 
 	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
 	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
-
 	QRectF textureCoordinates(Tile& tile);
 };
 
