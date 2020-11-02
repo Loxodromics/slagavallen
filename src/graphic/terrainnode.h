@@ -11,21 +11,11 @@
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGOpaqueTextureMaterial>
 
+#include "src/logic/tile.h"
+
 namespace LFD {
 
 namespace slagavallen {
-
-enum TerrainType {
-	Grass0,
-	Grass1,
-	Grass2,
-	Grass3,
-};
-
-struct Tile {
-	unsigned int id;
-	TerrainType terrainType;
-};
 
 class TerrainNode : public QSGGeometryNode {
 public:
@@ -39,15 +29,15 @@ protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;
 	QPointF m_offset;
-	QVector<Tile> m_tiles;
+	QVector<std::shared_ptr<Tile>> m_tiles;
 	unsigned int m_worldSizeX;
 	unsigned int m_worldSizeY;
 
 	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
 	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
-	QRectF textureCoordinates(Tile& tile);
+	QRectF textureCoordinates(std::shared_ptr<Tile> tile);
 };
 
-}
+}	// namespace slagavallen
 
-}
+}	// namespace LFD

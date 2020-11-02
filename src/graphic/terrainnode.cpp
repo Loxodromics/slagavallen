@@ -41,9 +41,9 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 
 	/// randomly fill the world with tiles
 	for (unsigned int i = 0; i < this->m_worldSizeX * this->m_worldSizeY + 1; ++i) {
-		Tile tile;
-		tile.terrainType = (TerrainType)QRandomGenerator::global()->bounded(3);
-		tile.id = i;
+		auto tile = std::make_shared<Tile>();
+		tile->terrainType = (TerrainType)QRandomGenerator::global()->bounded(3);
+		tile->id = i;
 		this->m_tiles.push_back(tile);
 	}
 }
@@ -59,8 +59,7 @@ void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCou
 
 	int index = i_v + this->m_worldSizeX * i_h;
 	if (index < this->m_tiles.size()) {
-		Tile tile = this->m_tiles[index];
-		QRectF textureCoordinates = this->textureCoordinates(tile);
+		QRectF textureCoordinates = this->textureCoordinates(this->m_tiles[index]);
 		int i = (i_v * this->m_worldSizeX /*vCount*/ + i_h);
 		vertices[i * 4].set(dx, dy, textureCoordinates.x(), textureCoordinates.y());
 		vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, textureCoordinates.x() + textureCoordinates.width(), textureCoordinates.y());
@@ -69,9 +68,9 @@ void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCou
 	}
 }
 
-QRectF TerrainNode::textureCoordinates(Tile& tile)
+QRectF TerrainNode::textureCoordinates(std::shared_ptr<Tile> tile)
 {
-	switch (tile.terrainType) {
+	switch (tile->terrainType) {
 	case TerrainType::Grass0:
 		return QRectF(0.0f, 0.0f, 0.5f, 0.5f);
 		break;

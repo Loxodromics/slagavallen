@@ -31,6 +31,7 @@ set(SOURCES
 	src/graphic/backgroundnode.cpp
 	src/graphic/gameworlditem.cpp
 	src/graphic/terrainnode.cpp
+	src/logic/tile.cpp
 	qml/qml.qrc)
 
 set(TS_FILES resources/slagavallen_en_001.ts)
