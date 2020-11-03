@@ -11,11 +11,9 @@ namespace LFD {
 
 namespace slagavallen {
 
-Tile::Tile()
-{
+Tile::Tile() {
 
 }
-
 
 }	// namespace slagavallen
 

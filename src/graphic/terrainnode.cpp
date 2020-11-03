@@ -6,10 +6,11 @@
 //  Copyright (c) 2020 Philipp Engelhard. All rights reserved.
 //
 #include "terrainnode.h"
+#include "textureatlas.h"
 
 #include "qmath.h"
-#include <QtQuick/QSGTexture>
 #include <QtCore/QRandomGenerator>
+#include <QtQuick/QSGTexture>
 
 #define GRID_SIZE 32
 
@@ -42,8 +43,9 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	/// randomly fill the world with tiles
 	for (unsigned int i = 0; i < this->m_worldSizeX * this->m_worldSizeY + 1; ++i) {
 		auto tile = std::make_shared<Tile>();
-		tile->terrainType = (TerrainType)QRandomGenerator::global()->bounded(3);
+		tile->terrainType = static_cast<Tile::TerrainType>(QRandomGenerator::global()->bounded(3) + 1);
 		tile->id = i;
+		tile->rotation = static_cast<Tile::Rotation>(QRandomGenerator::global()->bounded(3));
 		this->m_tiles.push_back(tile);
 	}
 }
@@ -59,30 +61,19 @@ void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCou
 
 	int index = i_v + this->m_worldSizeX * i_h;
 	if (index < this->m_tiles.size()) {
-		QRectF textureCoordinates = this->textureCoordinates(this->m_tiles[index]);
 		int i = (i_v * this->m_worldSizeX /*vCount*/ + i_h);
-		vertices[i * 4].set(dx, dy, textureCoordinates.x(), textureCoordinates.y());
-		vertices[i * 4 + 1].set(dx + GRID_SIZE, dy, textureCoordinates.x() + textureCoordinates.width(), textureCoordinates.y());
-		vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE, textureCoordinates.x() + textureCoordinates.width(), textureCoordinates.y() + textureCoordinates.height());
-		vertices[i * 4 + 3].set(dx, dy + GRID_SIZE,textureCoordinates.x(), textureCoordinates.y() + textureCoordinates.height());
-	}
-}
-
-QRectF TerrainNode::textureCoordinates(std::shared_ptr<Tile> tile)
-{
-	switch (tile->terrainType) {
-	case TerrainType::Grass0:
-		return QRectF(0.0f, 0.0f, 0.5f, 0.5f);
-		break;
-	case TerrainType::Grass1:
-		return QRectF(0.5f, 0.0, 0.5f, 0.5f);
-		break;
-	case TerrainType::Grass2:
-		return QRectF(0.0f, 0.5f, 0.5f, 0.5f);
-		break;
-	case TerrainType::Grass3:
-		return QRectF(0.5f, 0.5f, 0.5f, 0.5f);
-		break;
+		vertices[i * 4].set(dx, dy,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Left),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Top));
+		vertices[i * 4 + 1].set(dx + GRID_SIZE, dy,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Right),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Top));
+		vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Right),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Bottom));
+		vertices[i * 4 + 3].set(dx, dy + GRID_SIZE,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Left),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Bottom));
 	}
 }
 
@@ -98,8 +89,8 @@ void TerrainNode::setRect(const QRectF& rect)
 	QSGGeometry::TexturedPoint2D* vertices = m_geometry->vertexDataAsTexturedPoint2D();
 
 	/// first try: draw the whole world, lots of over draw...
-	for (unsigned int i_v = 0; i_v <= this->m_worldSizeX/*vCount*/; ++i_v) {
-		for (unsigned int i_h = 0; i_h <= this->m_worldSizeY/*hCount*/; ++i_h) {
+	for (unsigned int i_v = 0; i_v <= this->m_worldSizeX /*vCount*/; ++i_v) {
+		for (unsigned int i_h = 0; i_h <= this->m_worldSizeY /*hCount*/; ++i_h) {
 			this->drawTile(i_v, i_h, vCount, hCount, vertices, this->m_offset.x(), this->m_offset.y());
 		}
 	}

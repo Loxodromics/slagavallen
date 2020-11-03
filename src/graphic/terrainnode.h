@@ -11,6 +11,7 @@
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGOpaqueTextureMaterial>
 
+#include "src/graphic/textureatlas.h"
 #include "src/logic/tile.h"
 
 namespace LFD {
@@ -32,10 +33,10 @@ protected:
 	QVector<std::shared_ptr<Tile>> m_tiles;
 	unsigned int m_worldSizeX;
 	unsigned int m_worldSizeY;
+	TextureAtlas m_textureAtlas;
 
-	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
-	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
-	QRectF textureCoordinates(std::shared_ptr<Tile> tile);
+	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
+	  float offsetX, float offsetY);
 };
 
 }	// namespace slagavallen

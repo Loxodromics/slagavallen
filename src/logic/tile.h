@@ -11,10 +11,8 @@ namespace LFD {
 
 namespace slagavallen {
 
-class Tile
-{
+class Tile {
 public:
-
 	enum class TerrainType {
 		None,
 		Grass0,
@@ -35,10 +33,8 @@ public:
 	unsigned int id;
 	TerrainType terrainType;
 	Rotation rotation;
-
 };
 
 }	// namespace slagavallen
 
 }	// namespace LFD
-
