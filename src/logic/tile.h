@@ -15,7 +15,7 @@ class Tile
 {
 public:
 
-	enum TerrainType {
+	enum class TerrainType {
 		None,
 		Grass0,
 		Grass1,
@@ -23,7 +23,7 @@ public:
 		Grass3,
 	};
 
-	enum Rotation {
+	enum class Rotation {
 		Rot_0,
 		Rot_90,
 		Rot_180,
