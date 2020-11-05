@@ -23,7 +23,8 @@ public:
 		Left,
 		Top,
 		Right,
-		Bottom
+		Bottom,
+		NumSide
 	};
 
 	TextureAtlas();

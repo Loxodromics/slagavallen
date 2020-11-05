@@ -27,7 +27,8 @@ qreal TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Side side)
 
 qreal TextureAtlas::rotatedTextureCoordinates(QVector<qreal> textureCoordinates, Tile::Rotation rotation, Side side)
 {
-	return textureCoordinates[static_cast<int>(side)];
+	int index = (static_cast<int>(side) + static_cast<int>(rotation)) % static_cast<int>(Side::NumSide);
+	return textureCoordinates[index];
 }
 
 }	// namespace slagavallen
