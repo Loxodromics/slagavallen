@@ -19,6 +19,7 @@ public:
 		Grass1,
 		Grass2,
 		Grass3,
+		NumTerrainType
 	};
 
 	enum class Rotation {
@@ -26,6 +27,7 @@ public:
 		Rot_90,
 		Rot_180,
 		Rot_270,
+		NumRotation
 	};
 
 	explicit Tile();

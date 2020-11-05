@@ -43,9 +43,9 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	/// randomly fill the world with tiles
 	for (unsigned int i = 0; i < this->m_worldSizeX * this->m_worldSizeY + 1; ++i) {
 		auto tile = std::make_shared<Tile>();
-		tile->terrainType = static_cast<Tile::TerrainType>(QRandomGenerator::global()->bounded(3) + 1);
+		tile->terrainType = static_cast<Tile::TerrainType>(QRandomGenerator::global()->bounded(static_cast<int>(Tile::TerrainType::NumTerrainType) - 1) + 1);
 		tile->id = i;
-		tile->rotation = static_cast<Tile::Rotation>(QRandomGenerator::global()->bounded(3));
+		tile->rotation = static_cast<Tile::Rotation>(QRandomGenerator::global()->bounded(static_cast<int>(Tile::Rotation::NumRotation)));
 		this->m_tiles.push_back(tile);
 	}
 }
