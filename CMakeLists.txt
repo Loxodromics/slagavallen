@@ -36,7 +36,7 @@ set(SOURCES
 	qml/qml.qrc)
 
 set(TS_FILES resources/slagavallen_en_001.ts)
-qt5_add_resources(SOURCES resources.qrc)
+qt_add_resources(SOURCES resources.qrc)
 
 if(ANDROID)
 	add_library(slagavallen SHARED
@@ -55,4 +55,4 @@ target_compile_definitions(slagavallen
 target_link_libraries(slagavallen
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
 
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
