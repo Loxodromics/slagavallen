@@ -63,17 +63,17 @@ void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCou
 	if (index < this->m_tiles.size()) {
 		int i = (i_v * this->m_worldSizeX /*vCount*/ + i_h);
 		vertices[i * 4].set(dx, dy,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Left),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Top));
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 0),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 0));
 		vertices[i * 4 + 1].set(dx + GRID_SIZE, dy,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Right),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Top));
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 1),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 1));
 		vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Right),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Bottom));
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 2),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 2));
 		vertices[i * 4 + 3].set(dx, dy + GRID_SIZE,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Left),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Side::Bottom));
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 3),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 3));
 	}
 }
 

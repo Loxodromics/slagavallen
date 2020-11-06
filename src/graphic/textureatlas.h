@@ -19,20 +19,18 @@ namespace slagavallen {
 
 class TextureAtlas {
 public:
-	enum class Side {
-		Left,
-		Top,
-		Right,
-		Bottom,
-		NumSide
+	enum class Axis {
+		Horizontal,
+		Vertical
 	};
 
 	TextureAtlas();
 
-	qreal textureCoordinates(std::shared_ptr<Tile> tile, Side side);
+	qreal textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner);
 
 protected:
-	qreal rotatedTextureCoordinates(QVector<qreal> textureCoordinates, Tile::Rotation rotation, Side side);
+	qreal rotatedTextureCoordinates(QVector<qreal> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner);
+	qreal coordinate(QVector<qreal> textureCoordinates, Axis axis, unsigned int corner);
 
 	QMap<Tile::TerrainType, QVector<qreal>> m_textureCoordinates;
 };
