@@ -98,19 +98,19 @@ void TerrainNode::setRect(const QRectF& rect)
 
 	/// Tell the scenegraph we updated the geometry...
 	this->markDirty(QSGNode::DirtyGeometry);
-	qDebug() << "TerrainNode::setRect";
+//	qDebug() << "TerrainNode::setRect";
 }
 
 void TerrainNode::setOffset(const QPointF& offset)
 {
 	this->m_offset = offset;
-	qDebug() << "offset: " << offset;
+//	qDebug() << "offset: " << offset;
 }
 
 void TerrainNode::addOffset(const QPointF& offset)
 {
 	this->m_offset += offset;
-	qDebug() << "offset: " << offset;
+//	qDebug() << "offset: " << offset;
 }
 
 }	// namespace slagavallen
