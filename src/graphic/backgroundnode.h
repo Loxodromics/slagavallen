@@ -1,10 +1,11 @@
-//
-//  backgroundnode.h
-//  slagavallen
-//
-//  Created by philipp on 28.09.2020.
-//  Copyright (c) 2020 Philipp Engelhard. All rights reserved.
-//
+/**
+ *  backgroundnode.h
+ *  Slagavallen
+ *
+ *  Created by philipp on 28.09.2020.
+ *  Copyright (c) 2020 Philipp Engelhard.
+ *  Licensed under GPL-3.0, see LICENSE file.
+ */
 #pragma once
 
 #include <QtQuick/QSGFlatColorMaterial>

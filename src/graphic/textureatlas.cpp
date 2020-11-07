@@ -1,10 +1,11 @@
-//
-//  textureatlas.cpp
-//  slagavallen
-//
-//  Created by philipp on 02.11.2020.
-//  Copyright (c) 2020 Philipp Engelhard. All rights reserved.
-//
+/**
+ *  textureatlas.cpp
+ *  Slagavallen
+ *
+ *  Created by philipp on 02.11.2020.
+ *  Copyright (c) 2020 Philipp Engelhard.
+ *  Licensed under GPL-3.0, see LICENSE file.
+ */
 
 #include "textureatlas.h"
 

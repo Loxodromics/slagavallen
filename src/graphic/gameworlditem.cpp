@@ -1,10 +1,11 @@
-//
-//  gameworlditem.cpp
-//  slagavallen
-//
-//  Created by philipp on 27.09.2020.
-//  Copyright (c) 2020 Philipp Engelhard. All rights reserved.
-//
+/**
+ *  gameworlditem.cpp
+ *  Slagavallen
+ *
+ *  Created by philipp on 27.09.2020.
+ *  Copyright (c) 2020 Philipp Engelhard.
+ *  Licensed under GPL-3.0, see LICENSE file.
+ */
 
 #include "gameworlditem.h"
 #include "backgroundnode.h"
