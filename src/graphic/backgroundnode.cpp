@@ -81,7 +81,6 @@ private:
 
 BackgroundNode::BackgroundNode(QQuickWindow* window)
 {
-	// Make some noise...
 	QImage image(":/resources/textures/water.png");
 
 	QSGTexture* t = window->createTextureFromImage(image);

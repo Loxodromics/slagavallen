@@ -36,6 +36,11 @@ public:
 	unsigned int id;
 	TerrainType terrainType;
 	Rotation rotation;
+
+	/// Ideas:
+	/// layer
+	/// visibility [0..1]
+	/// discovered
 };
 
 }	// namespace slagavallen
