@@ -22,7 +22,18 @@ class GameWorldItemNode;
 class GameWorldItem : public QQuickItem {
 	Q_OBJECT
 	QML_ELEMENT
+
 public:
+	enum class TileMode {
+		RectFlat,
+		RectIso,
+		HexFlat,
+		HexIso,
+		NumTileMode,
+	};
+	Q_ENUM(TileMode)
+	Q_PROPERTY(TileMode tileMode READ tileMode WRITE setTileMode NOTIFY tileModeChanged)
+
 	GameWorldItem();
 
 	void mouseDoubleClickEvent(QMouseEvent* event) override;
@@ -30,16 +41,23 @@ public:
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
+	TileMode tileMode() const;
+
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
 	void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
 
 public slots:
+	void setTileMode(TileMode tileMode);
+
+signals:
+	void tileModeChanged(TileMode tileMode);
 
 protected:
 	bool m_geometryChanged;
 	QPointF m_mouseDownPos;
 	GameWorldItemNode* m_gameWorldItemNode;
+	TileMode m_tileMode;
 };
 
 class GameWorldItemNode : public QSGNode {
@@ -48,6 +66,6 @@ public:
 	BackgroundNode* m_background;
 };
 
-}
+}	/// namespace slagavallen
 
-}
+}	/// namespace LFD

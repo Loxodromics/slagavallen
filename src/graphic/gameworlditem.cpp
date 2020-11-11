@@ -19,7 +19,9 @@ namespace slagavallen {
 
 GameWorldItem::GameWorldItem()
 	: m_geometryChanged(false),
-	  m_gameWorldItemNode(nullptr)
+	  m_mouseDownPos(0.0f, 0.0f),
+	  m_gameWorldItemNode(nullptr),
+	  m_tileMode(TileMode::RectFlat)
 {
 	setFlag(ItemHasContents, true);
 }
@@ -92,11 +94,26 @@ void GameWorldItem::mousePressEvent(QMouseEvent* event)
 
 void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 {
+	Q_UNUSED(event);
 //	qDebug() << event;
 	this->m_mouseDownPos = QPointF();
-	//	update();	// changing an attribute of the qquickitem and updating the scenegraph
+//	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
+void GameWorldItem::setTileMode(GameWorldItem::TileMode tileMode)
+{
+	if (this->m_tileMode == tileMode)
+		return;
+
+	this->m_tileMode = tileMode;
+	emit tileModeChanged(this->m_tileMode);
 }
 
+GameWorldItem::TileMode GameWorldItem::tileMode() const
+{
+	return this->m_tileMode;
 }
+
+}	/// namespace slagavallen
+
+}	/// namespace LFD
