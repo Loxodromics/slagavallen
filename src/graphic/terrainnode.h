@@ -21,6 +21,15 @@ namespace slagavallen {
 
 class TerrainNode : public QSGGeometryNode {
 public:
+	enum class TileMode {
+		RectFlat,
+		RectIso,
+		HexFlat,
+		HexIso,
+		NumTileMode,
+	};
+//	Q_ENUM(TileMode)
+
 	TerrainNode(QQuickWindow* window);
 
 	void setRect(const QRectF& rect);
@@ -31,12 +40,17 @@ protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;
 	QPointF m_offset;
-	QVector<std::shared_ptr<Tile>> m_tiles;
 	unsigned int m_worldSizeX;
 	unsigned int m_worldSizeY;
+	QVector<std::shared_ptr<Tile>> m_tiles;
 	TextureAtlas m_textureAtlas;
+	TileMode m_tileMode;
 
-	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
+	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
+	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
+	void drawTileRectFlat(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
+	  float offsetX, float offsetY);
+	void drawTileRectIso(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
 	  float offsetX, float offsetY);
 };
 

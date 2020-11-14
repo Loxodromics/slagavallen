@@ -20,10 +20,14 @@ namespace LFD {
 namespace slagavallen {
 
 TerrainNode::TerrainNode(QQuickWindow* window)
-	: m_geometry(nullptr)
+	: m_material()
+	, m_geometry(nullptr)
 	, m_offset(QPointF(0.0f, 0.0f))
 	, m_worldSizeX(64)
 	, m_worldSizeY(64)
+	, m_tiles()
+	, m_textureAtlas()
+	, m_tileMode(TileMode::RectFlat)
 {
 	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
 	this->setGeometry(m_geometry);
@@ -51,9 +55,57 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	}
 }
 
-void LFD::slagavallen::TerrainNode::drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
+void TerrainNode::drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
+{
+	switch (this->m_tileMode) {
+	case TileMode::RectFlat:
+		this->drawTileRectFlat(i_v, i_h, vCount, hCount, vertices, offsetX, offsetY);
+		break;
+	case TileMode::RectIso:
+		this->drawTileRectIso(i_v, i_h, vCount, hCount, vertices, offsetX, offsetY);
+		break;
+	case TileMode::HexFlat:
+		break;
+	case TileMode::HexIso:
+		break;
+	default:
+		break;
+	}
+}
+
+void LFD::slagavallen::TerrainNode::drawTileRectFlat(int i_v, int i_h, unsigned int vCount, unsigned hCount,
   QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
 {
+	Q_UNUSED(vCount);
+	Q_UNUSED(hCount);
+//	float dx = (i_v * GRID_SIZE + ((int)offsetX % GRID_SIZE)) - GRID_SIZE;
+//	float dy = (i_h * GRID_SIZE + ((int)offsetY % GRID_SIZE)) - GRID_SIZE;
+
+	float dx = (i_v * GRID_SIZE + (int)offsetX) - GRID_SIZE;
+	float dy = (i_h * GRID_SIZE + (int)offsetY) - GRID_SIZE;
+
+	int index = i_v + this->m_worldSizeX * i_h;
+	if (index < this->m_tiles.size()) {
+		int i = (i_v * this->m_worldSizeX /*vCount*/ + i_h);
+		vertices[i * 4].set(dx, dy,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 0),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 0));
+		vertices[i * 4 + 1].set(dx + GRID_SIZE, dy,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 1),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 1));
+		vertices[i * 4 + 2].set(dx + GRID_SIZE, dy + GRID_SIZE,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 2),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 2));
+		vertices[i * 4 + 3].set(dx, dy + GRID_SIZE,
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 3),
+		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 3));
+	}
+}
+
+void TerrainNode::drawTileRectIso(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
+{
+	Q_UNUSED(vCount);
+	Q_UNUSED(hCount);
 //	float dx = (i_v * GRID_SIZE + ((int)offsetX % GRID_SIZE)) - GRID_SIZE;
 //	float dy = (i_h * GRID_SIZE + ((int)offsetY % GRID_SIZE)) - GRID_SIZE;
 
@@ -110,7 +162,7 @@ void TerrainNode::setOffset(const QPointF& offset)
 void TerrainNode::addOffset(const QPointF& offset)
 {
 	this->m_offset += offset;
-//	qDebug() << "offset: " << offset;
+	//	qDebug() << "offset: " << offset;
 }
 
 }	// namespace slagavallen

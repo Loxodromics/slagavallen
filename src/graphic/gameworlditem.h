@@ -11,11 +11,12 @@
 #include <QQuickItem>
 #include <QtQuick/QSGGeometryNode>
 
+#include "terrainnode.h"
+
 namespace LFD {
 
 namespace slagavallen {
 
-class TerrainNode;
 class BackgroundNode;
 class GameWorldItemNode;
 
@@ -24,15 +25,7 @@ class GameWorldItem : public QQuickItem {
 	QML_ELEMENT
 
 public:
-	enum class TileMode {
-		RectFlat,
-		RectIso,
-		HexFlat,
-		HexIso,
-		NumTileMode,
-	};
-	Q_ENUM(TileMode)
-	Q_PROPERTY(TileMode tileMode READ tileMode WRITE setTileMode NOTIFY tileModeChanged)
+	Q_PROPERTY(TerrainNode::TileMode tileMode READ tileMode WRITE setTileMode NOTIFY tileModeChanged)
 
 	GameWorldItem();
 
@@ -41,23 +34,23 @@ public:
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
-	TileMode tileMode() const;
+	TerrainNode::TileMode tileMode() const;
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
 	void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
 
 public slots:
-	void setTileMode(TileMode tileMode);
+	void setTileMode(TerrainNode::TileMode tileMode);
 
 signals:
-	void tileModeChanged(TileMode tileMode);
+	void tileModeChanged(TerrainNode::TileMode tileMode);
 
 protected:
 	bool m_geometryChanged;
 	QPointF m_mouseDownPos;
 	GameWorldItemNode* m_gameWorldItemNode;
-	TileMode m_tileMode;
+	TerrainNode::TileMode m_tileMode;
 };
 
 class GameWorldItemNode : public QSGNode {
