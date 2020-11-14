@@ -25,8 +25,6 @@ class GameWorldItem : public QQuickItem {
 	QML_ELEMENT
 
 public:
-	Q_PROPERTY(TerrainNode::TileMode tileMode READ tileMode WRITE setTileMode NOTIFY tileModeChanged)
-
 	GameWorldItem();
 
 	void mouseDoubleClickEvent(QMouseEvent* event) override;
@@ -35,13 +33,11 @@ public:
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
 	TerrainNode::TileMode tileMode() const;
+	Q_INVOKABLE void setTileMode(int tileMode);
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
 	void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
-
-public slots:
-	void setTileMode(TerrainNode::TileMode tileMode);
 
 signals:
 	void tileModeChanged(TerrainNode::TileMode tileMode);

@@ -36,6 +36,9 @@ public:
 	void setOffset(const QPointF& offset);
 	void addOffset(const QPointF& offset);
 
+	TileMode tileMode() const;
+	void setTileMode(const TileMode& tileMode);
+
 protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;

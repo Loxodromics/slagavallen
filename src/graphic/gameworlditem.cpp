@@ -99,13 +99,22 @@ void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 //	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
-void GameWorldItem::setTileMode(TerrainNode::TileMode tileMode)
+void GameWorldItem::setTileMode(int tileMode)
 {
-	if (this->m_tileMode == tileMode)
+	TerrainNode::TileMode newTileMode = static_cast<TerrainNode::TileMode>(tileMode);
+	if (this->m_tileMode == newTileMode)
 		return;
 
-	this->m_tileMode = tileMode;
+	this->m_tileMode = newTileMode;
 	emit tileModeChanged(this->m_tileMode);
+
+	if (this->m_gameWorldItemNode != nullptr) {
+		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
+			this->m_gameWorldItemNode->m_terrain->setTileMode(this->m_tileMode);
+			this->m_geometryChanged = true;
+			this->update();
+		}
+	}
 }
 
 TerrainNode::TileMode GameWorldItem::tileMode() const

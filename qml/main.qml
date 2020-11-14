@@ -7,6 +7,7 @@
  *  Licensed under GPL-3.0, see LICENSE file.
  */
 import QtQuick 2.11
+import QtQuick.Controls 2.11
 import QtQuick.Window 2.11
 
 import Slagavallen 1.0
@@ -21,5 +22,16 @@ Window {
         id: gameWorldItem
 
         anchors.fill: parent
+    }
+
+
+    ComboBox {
+        model: ["RectFlat", "RectIso", "HexFlat", "HexIso"]
+        anchors.top: parent.top
+        anchors.left: parent.left
+
+        onActivated: {
+            gameWorldItem.setTileMode(index);
+        }
     }
 }

@@ -27,7 +27,7 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	, m_worldSizeY(64)
 	, m_tiles()
 	, m_textureAtlas()
-	, m_tileMode(TileMode::RectIso)
+	, m_tileMode(TileMode::RectFlat)
 {
 	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
 	this->setGeometry(m_geometry);
@@ -159,6 +159,17 @@ void TerrainNode::addOffset(const QPointF& offset)
 {
 	this->m_offset += offset;
 	//	qDebug() << "offset: " << offset;
+}
+
+TerrainNode::TileMode TerrainNode::tileMode() const
+{
+	return this->m_tileMode;
+}
+
+void TerrainNode::setTileMode(const TileMode& tileMode)
+{
+	this->m_tileMode = tileMode;
+	qDebug() << "tileMode: " << (int)this->m_tileMode;
 }
 
 }	// namespace slagavallen
