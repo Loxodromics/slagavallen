@@ -105,22 +105,25 @@ void TerrainNode::drawTileRectIso(int i_h, int i_v, unsigned int vCount, unsigne
 	Q_UNUSED(vCount);
 	Q_UNUSED(hCount);
 
-	float dh = ((-i_v * GRID_SIZE) + (i_h * GRID_SIZE) + (int)offsetX) - GRID_SIZE;
-	float dv = ((0.5f * i_v * GRID_SIZE) + (0.5f * i_h * GRID_SIZE) + (int)offsetY) - GRID_SIZE;
+	qreal dh = ((-i_v * GRID_SIZE) + (i_h * GRID_SIZE) + (int)offsetX) - GRID_SIZE;
+	qreal dv = ((0.5f * i_v * GRID_SIZE) + (0.5f * i_h * GRID_SIZE) + (int)offsetY) - GRID_SIZE;
+	qreal heightFactor = 6.0;
+	qreal sinFactor = 0.6;
 
 	int index = i_h + this->m_worldSizeX * i_v;
 	if (index < this->m_tiles.size()) {
 		int i = (i_h * this->m_worldSizeX /*vCount*/ + i_v);
-		vertices[i * 4].set(dh, dv,
+
+		vertices[i * 4].set(dh, dv + heightFactor * (qSin(sinFactor * i_h) + qCos(sinFactor * i_v)),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 0),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 0));
-		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv + (0.5f * GRID_SIZE),
+		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * (qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (i_v))),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 1),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 1));
-		vertices[i * 4 + 2].set(dh, dv + GRID_SIZE,
+		vertices[i * 4 + 2].set(dh, dv + GRID_SIZE + heightFactor * (qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (1.0 + i_v))),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 2),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 2));
-		vertices[i * 4 + 3].set(dh - GRID_SIZE, dv + (0.5f * GRID_SIZE),
+		vertices[i * 4 + 3].set(dh - GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * (qSin(sinFactor * (i_h)) + qCos(sinFactor * (1.0 + i_v))),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 3),
 		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 3));
 	}
