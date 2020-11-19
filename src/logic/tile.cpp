@@ -12,7 +12,12 @@ namespace LFD {
 
 namespace slagavallen {
 
-Tile::Tile() {
+Tile::Tile(unsigned int id, Tile::TerrainType terrainType, Tile::Rotation rotation, double height)
+	: id(id)
+	, terrainType(terrainType)
+	, rotation(rotation)
+	, height(height)
+{
 
 }
 

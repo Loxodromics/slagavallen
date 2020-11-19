@@ -13,7 +13,8 @@
 #include <QtQuick/QSGOpaqueTextureMaterial>
 
 #include "src/graphic/textureatlas.h"
-#include "src/logic/tile.h"
+#include "src/logic/map.h"
+#include "src/logic/mapgenerator.h"
 
 namespace LFD {
 
@@ -43,9 +44,7 @@ protected:
 	QSGOpaqueTextureMaterial m_material;
 	QSGGeometry* m_geometry;
 	QPointF m_offset;
-	unsigned int m_worldSizeX;
-	unsigned int m_worldSizeY;
-	QVector<std::shared_ptr<Tile>> m_tiles;
+	std::shared_ptr<Map> m_currentMap;
 	TextureAtlas m_textureAtlas;
 	TileMode m_tileMode;
 

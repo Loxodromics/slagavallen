@@ -31,11 +31,12 @@ public:
 		NumRotation
 	};
 
-	explicit Tile();
+	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, double height);
 
 	unsigned int id;
 	TerrainType terrainType;
 	Rotation rotation;
+	double height;
 
 	/// Ideas:
 	/// layer

@@ -32,6 +32,8 @@ set(SOURCES
 	src/graphic/gameworlditem.cpp
 	src/graphic/terrainnode.cpp
 	src/graphic/textureatlas.cpp
+	src/logic/map.cpp
+	src/logic/mapgenerator.cpp
 	src/logic/tile.cpp
 	qml/qml.qrc)
 

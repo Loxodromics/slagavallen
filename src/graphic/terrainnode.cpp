@@ -23,9 +23,6 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	: m_material()
 	, m_geometry(nullptr)
 	, m_offset(QPointF(0.0f, 0.0f))
-	, m_worldSizeX(64)
-	, m_worldSizeY(64)
-	, m_tiles()
 	, m_textureAtlas()
 	, m_tileMode(TileMode::RectFlat)
 {
@@ -44,15 +41,8 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	texture->setVerticalWrapMode(QSGTexture::Repeat);
 
 	this->m_material.setTexture(texture);
-
-	/// randomly fill the world with tiles
-	for (unsigned int i = 0; i < this->m_worldSizeX * this->m_worldSizeY + 1; ++i) {
-		auto tile = std::make_shared<Tile>();
-		tile->terrainType = static_cast<Tile::TerrainType>(QRandomGenerator::global()->bounded(static_cast<int>(Tile::TerrainType::NumTerrainType) - 1) + 1);
-		tile->id = i;
-		tile->rotation = static_cast<Tile::Rotation>(QRandomGenerator::global()->bounded(static_cast<int>(Tile::Rotation::NumRotation)));
-		this->m_tiles.push_back(tile);
-	}
+	MapGenerator mapGenerator;
+	this->m_currentMap = mapGenerator.generateMap(GRID_SIZE, GRID_SIZE);
 }
 
 void TerrainNode::drawTile(int i_h, int i_v, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY)
@@ -82,21 +72,21 @@ void LFD::slagavallen::TerrainNode::drawTileRectFlat(int i_h, int i_v, unsigned 
 	float dh = (i_h * GRID_SIZE + (int)offsetX) - GRID_SIZE;
 	float dv = (i_v * GRID_SIZE + (int)offsetY) - GRID_SIZE;
 
-	int index = i_h + this->m_worldSizeX * i_v;
-	if (index < this->m_tiles.size()) {
-		int i = (i_h * this->m_worldSizeX /*vCount*/ + i_v);
+	int index = i_h + this->m_currentMap->width() * i_v;
+	if (index < this->m_currentMap->size()) {
+		int i = (i_h * this->m_currentMap->width() /*vCount*/ + i_v);
 		vertices[i * 4].set(dh, dv,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 0),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 0));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0));
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 1),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 1));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1));
 		vertices[i * 4 + 2].set(dh + GRID_SIZE, dv + GRID_SIZE,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 2),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 2));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2));
 		vertices[i * 4 + 3].set(dh, dv + GRID_SIZE,
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 3),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 3));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3));
 	}
 }
 
@@ -110,22 +100,22 @@ void TerrainNode::drawTileRectIso(int i_h, int i_v, unsigned int vCount, unsigne
 	qreal heightFactor = 6.0;
 	qreal sinFactor = 0.6;
 
-	int index = i_h + this->m_worldSizeX * i_v;
-	if (index < this->m_tiles.size()) {
-		int i = (i_h * this->m_worldSizeX /*vCount*/ + i_v);
+	int index = i_h + this->m_currentMap->width() * i_v;
+	if (index < this->m_currentMap->size()) {
+		int i = (i_h * this->m_currentMap->width() /*vCount*/ + i_v);
 
 		vertices[i * 4].set(dh, dv + heightFactor * (qSin(sinFactor * i_h) + qCos(sinFactor * i_v)),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 0),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 0));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0));
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * (qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (i_v))),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 1),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 1));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1));
 		vertices[i * 4 + 2].set(dh, dv + GRID_SIZE + heightFactor * (qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (1.0 + i_v))),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 2),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 2));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2));
 		vertices[i * 4 + 3].set(dh - GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * (qSin(sinFactor * (i_h)) + qCos(sinFactor * (1.0 + i_v))),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Horizontal, 3),
-		  this->m_textureAtlas.textureCoordinates(this->m_tiles[index], TextureAtlas::Axis::Vertical, 3));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3));
 	}
 }
 
@@ -135,14 +125,14 @@ void TerrainNode::setRect(const QRectF& rect)
 	int vCount = int((rect.width() - 1) / GRID_SIZE) + 2;
 	int hCount = int((rect.height() - 1) / GRID_SIZE) + 2;
 
-	int tilesCount = (this->m_worldSizeX + 1) * (this->m_worldSizeY + 1) * 4;
+	int tilesCount = (this->m_currentMap->width() + 1) * (this->m_currentMap->height() + 1) * 4;
 	this->m_geometry->allocate(tilesCount);
 
 	QSGGeometry::TexturedPoint2D* vertices = m_geometry->vertexDataAsTexturedPoint2D();
 
 	/// first try: draw the whole world, not trying to figure out what is visible and what not
-	for (unsigned int i_v = 0; i_v <= this->m_worldSizeX /*vCount*/; ++i_v) {
-		for (unsigned int i_h = 0; i_h <= this->m_worldSizeY /*hCount*/; ++i_h) {
+	for (unsigned int i_v = 0; i_v <= this->m_currentMap->width() /*vCount*/; ++i_v) {
+		for (unsigned int i_h = 0; i_h <= this->m_currentMap->height() /*hCount*/; ++i_h) {
 			this->drawTile(i_v, i_h, vCount, hCount, vertices, this->m_offset.x(), this->m_offset.y());
 		}
 	}
