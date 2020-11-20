@@ -50,9 +50,9 @@ protected:
 
 	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
 	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
-	void drawTileRectFlat(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
+	void drawTileRectFlat(std::shared_ptr<Tile> tile, int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
 	  float offsetX, float offsetY);
-	void drawTileRectIso(int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
+	void drawTileRectIso(std::shared_ptr<Tile> tile, int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
 	  float offsetX, float offsetY);
 };
 

@@ -8,6 +8,8 @@
  */
 #pragma once
 
+#include <vector>
+
 namespace LFD {
 
 namespace slagavallen {
@@ -31,12 +33,12 @@ public:
 		NumRotation
 	};
 
-	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, double height);
+	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, std::vector<double> height);
 
 	unsigned int id;
 	TerrainType terrainType;
 	Rotation rotation;
-	double height;
+	std::vector<double> height;
 
 	/// Ideas:
 	/// layer
