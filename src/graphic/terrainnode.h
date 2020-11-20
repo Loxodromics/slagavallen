@@ -29,7 +29,6 @@ public:
 		HexIso,
 		NumTileMode,
 	};
-//	Q_ENUM(TileMode)
 
 	TerrainNode(QQuickWindow* window);
 
@@ -48,12 +47,12 @@ protected:
 	TextureAtlas m_textureAtlas;
 	TileMode m_tileMode;
 
-	void drawTile(int i_v, int i_h, unsigned int vCount, unsigned hCount,
+	void drawTile(
+	  unsigned int i_v, unsigned int i_h, QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
+	void drawTileRectFlat(std::shared_ptr<Tile> tile, unsigned int i_v, unsigned int i_h,
 	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
-	void drawTileRectFlat(std::shared_ptr<Tile> tile, int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
-	  float offsetX, float offsetY);
-	void drawTileRectIso(std::shared_ptr<Tile> tile, int i_v, int i_h, unsigned int vCount, unsigned hCount, QSGGeometry::TexturedPoint2D* vertices,
-	  float offsetX, float offsetY);
+	void drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_v, int unsigned i_h,
+	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
 };
 
 }	// namespace slagavallen
