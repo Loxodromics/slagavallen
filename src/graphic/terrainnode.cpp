@@ -41,7 +41,7 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	texture->setVerticalWrapMode(QSGTexture::Repeat);
 
 	this->m_material.setTexture(texture);
-	MapGenerator mapGenerator;
+	MapGenerator mapGenerator(1234, 5);
 	this->m_currentMap = mapGenerator.generateMap(32, 32);
 }
 
@@ -94,7 +94,7 @@ void TerrainNode::drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_h, 
 {
 	qreal dh = ((-i_v * GRID_SIZE) + (i_h * GRID_SIZE) + (int)offsetX) - GRID_SIZE;
 	qreal dv = ((0.5f * i_v * GRID_SIZE) + (0.5f * i_h * GRID_SIZE) + (int)offsetY) - GRID_SIZE;
-	qreal heightFactor = 6.0;
+	qreal heightFactor = 24.0;
 
 
 	unsigned int index = i_h + this->m_currentMap->width() * i_v;

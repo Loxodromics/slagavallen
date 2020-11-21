@@ -8,6 +8,7 @@
 #include "mapgenerator.h"
 
 #include "qmath.h"
+#include <QDebug>
 #include <QtCore/QRandomGenerator>
 #include <vector>
 
@@ -15,12 +16,45 @@ namespace LFD {
 
 namespace slagavallen {
 
-MapGenerator::MapGenerator() {}
-
-std::shared_ptr<Map> LFD::slagavallen::MapGenerator::generateMap(unsigned int width, unsigned int height)
+MapGenerator::MapGenerator(unsigned int seed, unsigned int octaves)
+	: m_simplexElevation(seed)
+	, m_octaves(octaves)
 {
-	qreal sinFactor = 0.6;
+}
 
+double MapGenerator::elevationAt(const double x, const double y, const double z)
+{
+	double newX = this->avoidZero(x) * 0.1;
+	double newY = this->avoidZero(y) * 0.1;
+	double newZ = this->avoidZero(z) * 0.1;
+	/// magic numbers to get the a range that is _roughly_ [0, 1], that's good enough
+	double elevation = this->m_simplexElevation.fractal(this->m_octaves, newX, newY, newZ) / 1.3 + 0.45;
+
+	//	elevation = pow(elevation, Values::getInstance().terrainExp());
+
+	if (elevation > m_max) {
+		m_max = elevation;
+		qDebug() << "min: " << m_min << "max: " << m_max;
+	}
+
+	if (elevation < m_min) {
+		m_min = elevation;
+		qDebug() << "min: " << m_min << "max: " << m_max;
+	}
+
+	return elevation;
+}
+
+double MapGenerator::avoidZero(const double value)
+{
+	if ((value > -0.00001) && (value < 0.00001))
+		return 0.0002;
+	else
+		return value;
+}
+
+std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int height)
+{
 	auto newMap = std::make_shared<Map>(width, height);
 
 	/// randomly fill the world with tiles
@@ -32,10 +66,8 @@ std::shared_ptr<Map> LFD::slagavallen::MapGenerator::generateMap(unsigned int wi
 				QRandomGenerator::global()->bounded(static_cast<int>(Tile::TerrainType::NumTerrainType) - 1) + 1),
 			  static_cast<Tile::Rotation>(
 				QRandomGenerator::global()->bounded(static_cast<int>(Tile::Rotation::NumRotation))),
-			  std::vector<double>({ qSin(sinFactor * i_h) + qCos(sinFactor * i_v),
-				qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (i_v)),
-				qSin(sinFactor * (1.0 + i_h)) + qCos(sinFactor * (1.0 + i_v)),
-				qSin(sinFactor * (i_h)) + qCos(sinFactor * (1.0 + i_v)) }));
+			  std::vector<double>({ elevationAt(i_h, i_v, 0.0), elevationAt(1.0 + i_h, i_v, 0.0),
+				elevationAt(1.0 + i_h, 1.0 + i_v, 0.0), elevationAt(i_h, 1.0 + i_v, 0.0) }));
 			newMap->setTile(tile, tile->id);
 		}
 	}
