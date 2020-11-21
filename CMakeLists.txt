@@ -35,6 +35,7 @@ set(SOURCES
 	src/logic/map.cpp
 	src/logic/mapgenerator.cpp
 	src/logic/tile.cpp
+	src/thirdparty/simplexnoise.cpp
 	qml/qml.qrc)
 
 set(TS_FILES resources/slagavallen_en_001.ts)
