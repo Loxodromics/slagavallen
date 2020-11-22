@@ -27,12 +27,12 @@ public:
 
 	TextureAtlas();
 
-	double textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner);
+	double textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner) const;
 
 protected:
 	double rotatedTextureCoordinates(
-	  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner);
-	double coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner);
+	  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner) const;
+	double coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner) const;
 
 	QMap<Tile::TerrainType, QVector<double>> m_textureCoordinates;
 };

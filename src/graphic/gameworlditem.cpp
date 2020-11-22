@@ -67,6 +67,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 
 void GameWorldItem::mouseDoubleClickEvent(QMouseEvent* event)
 {
+	Q_UNUSED(event);
 //	qDebug() << event;
 //	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }

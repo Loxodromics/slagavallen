@@ -22,21 +22,21 @@ TextureAtlas::TextureAtlas()
 	this->m_textureCoordinates.insert(Tile::TerrainType::Grass3, QVector<double> { 0.5f, 0.5f, 1.0f, 1.0f });
 }
 
-double TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner)
+double TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner) const
 {
 	return TextureAtlas::rotatedTextureCoordinates(
 	  this->m_textureCoordinates[tile->terrainType], tile->rotation, axis, corner);
 }
 
 double TextureAtlas::rotatedTextureCoordinates(
-  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner)
+  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner) const
 {
 	/// % 4 corners
 	int rotatedCorner = (corner + static_cast<int>(rotation)) % 4;
 	return this->coordinate(textureCoordinates, axis, rotatedCorner);
 }
 
-double TextureAtlas::coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner)
+double TextureAtlas::coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner) const
 {
 	switch (corner) {
 	case 0:
