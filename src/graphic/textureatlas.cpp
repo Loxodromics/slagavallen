@@ -15,26 +15,28 @@ namespace slagavallen {
 
 TextureAtlas::TextureAtlas()
 {
-	this->m_textureCoordinates.insert(Tile::TerrainType::None,   QVector<qreal> { 0.0f, 0.0f, 0.0001f, 0.0001f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass0, QVector<qreal> { 0.0f, 0.0f, 0.5f, 0.5f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass1, QVector<qreal> { 0.5f, 0.0f, 1.0f, 0.5f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass2, QVector<qreal> { 0.0f, 0.5f, 0.5f, 1.0f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass3, QVector<qreal> { 0.5f, 0.5f, 1.0f, 1.0f });
+	this->m_textureCoordinates.insert(Tile::TerrainType::None, QVector<double> { 0.0f, 0.0f, 0.0001f, 0.0001f });
+	this->m_textureCoordinates.insert(Tile::TerrainType::Grass0, QVector<double> { 0.0f, 0.0f, 0.5f, 0.5f });
+	this->m_textureCoordinates.insert(Tile::TerrainType::Grass1, QVector<double> { 0.5f, 0.0f, 1.0f, 0.5f });
+	this->m_textureCoordinates.insert(Tile::TerrainType::Grass2, QVector<double> { 0.0f, 0.5f, 0.5f, 1.0f });
+	this->m_textureCoordinates.insert(Tile::TerrainType::Grass3, QVector<double> { 0.5f, 0.5f, 1.0f, 1.0f });
 }
 
-qreal TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner)
+double TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner)
 {
-	return TextureAtlas::rotatedTextureCoordinates(this->m_textureCoordinates[tile->terrainType], tile->rotation, axis, corner);
+	return TextureAtlas::rotatedTextureCoordinates(
+	  this->m_textureCoordinates[tile->terrainType], tile->rotation, axis, corner);
 }
 
-qreal TextureAtlas::rotatedTextureCoordinates(QVector<qreal> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner)
+double TextureAtlas::rotatedTextureCoordinates(
+  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner)
 {
 	/// % 4 corners
 	int rotatedCorner = (corner + static_cast<int>(rotation)) % 4;
 	return this->coordinate(textureCoordinates, axis, rotatedCorner);
 }
 
-qreal TextureAtlas::coordinate(QVector<qreal> textureCoordinates, Axis axis, unsigned int corner)
+double TextureAtlas::coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner)
 {
 	switch (corner) {
 	case 0:
@@ -65,7 +67,6 @@ qreal TextureAtlas::coordinate(QVector<qreal> textureCoordinates, Axis axis, uns
 	default:
 		return -1.0f;
 	}
-
 }
 
 }	// namespace slagavallen

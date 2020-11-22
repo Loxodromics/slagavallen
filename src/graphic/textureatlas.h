@@ -27,13 +27,14 @@ public:
 
 	TextureAtlas();
 
-	qreal textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner);
+	double textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner);
 
 protected:
-	qreal rotatedTextureCoordinates(QVector<qreal> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner);
-	qreal coordinate(QVector<qreal> textureCoordinates, Axis axis, unsigned int corner);
+	double rotatedTextureCoordinates(
+	  QVector<double> textureCoordinates, Tile::Rotation rotation, Axis axis, unsigned int corner);
+	double coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner);
 
-	QMap<Tile::TerrainType, QVector<qreal>> m_textureCoordinates;
+	QMap<Tile::TerrainType, QVector<double>> m_textureCoordinates;
 };
 
 }	// namespace slagavallen

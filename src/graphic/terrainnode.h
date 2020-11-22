@@ -48,11 +48,11 @@ protected:
 	TileMode m_tileMode;
 
 	void drawTile(
-	  unsigned int i_v, unsigned int i_h, QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
+	  unsigned int i_v, unsigned int i_h, QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
 	void drawTileRectFlat(std::shared_ptr<Tile> tile, unsigned int i_v, unsigned int i_h,
-	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
+	  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
 	void drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_v, int unsigned i_h,
-	  QSGGeometry::TexturedPoint2D* vertices, float offsetX, float offsetY);
+	  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
 };
 
 }	// namespace slagavallen
