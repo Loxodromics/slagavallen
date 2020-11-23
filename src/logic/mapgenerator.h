@@ -20,11 +20,13 @@ public:
 	explicit MapGenerator(unsigned int seed, unsigned int octaves);
 
 	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height);
-	virtual double elevationAt(const double x, const double y, const double z);
+	double elevationAt(const double x, const double y, const double z);
+	Tile::TerrainType terrainTypeAt(const double x, const double y, const double z);
 
 protected:
 	double avoidZero(const double value);
 	SimplexNoise m_simplexElevation;
+	SimplexNoise m_simplexTerrainType;
 	unsigned int m_octaves;
 
 	/// Debug
