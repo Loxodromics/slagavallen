@@ -11,6 +11,7 @@
 #include <QQuickWindow>
 #include <QtQuick/QSGGeometryNode>
 #include <QtQuick/QSGOpaqueTextureMaterial>
+#include <QtQuick/QSGSimpleMaterialShader>
 
 #include "src/graphic/textureatlas.h"
 #include "src/logic/map.h"
@@ -19,6 +20,29 @@
 namespace LFD {
 
 namespace slagavallen {
+
+struct TerrainMaterial {
+	~TerrainMaterial();
+
+	QSGTexture* texture;
+};
+
+class TerrainShader : public QSGSimpleMaterialShader<TerrainMaterial> {
+	static QSGMaterialShader* createShader() { return new TerrainShader; }
+
+public:
+	explicit TerrainShader();
+	static QSGSimpleMaterial<TerrainMaterial>* createMaterial();
+
+	QList<QByteArray> attributes() const override;
+	void updateState(const TerrainMaterial* m, const TerrainMaterial*) override;
+	void resolveUniforms() override;
+
+protected:
+	int id_color = -1;
+	int id_texture = -1;
+	int id_textureSize = -1;
+};
 
 class TerrainNode : public QSGGeometryNode {
 public:
@@ -40,7 +64,7 @@ public:
 	void setTileMode(const TileMode& tileMode);
 
 protected:
-	QSGOpaqueTextureMaterial m_material;
+	TerrainMaterial m_material;
 	QSGGeometry* m_geometry;
 	QPointF m_offset;
 	std::shared_ptr<Map> m_currentMap;

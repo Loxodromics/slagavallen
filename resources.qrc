@@ -4,5 +4,7 @@
         <file>resources/shader/background.vsh</file>
         <file>resources/textures/grass.png</file>
         <file>resources/textures/water.png</file>
+        <file>resources/shader/terrain.fsh</file>
+        <file>resources/shader/terrain.vsh</file>
     </qresource>
 </RCC>
