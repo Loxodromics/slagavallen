@@ -13,36 +13,14 @@
 #include <QtQuick/QSGOpaqueTextureMaterial>
 #include <QtQuick/QSGSimpleMaterialShader>
 
-#include "src/graphic/textureatlas.h"
+#include "terrainmaterial.h"
+#include "textureatlas.h"
 #include "src/logic/map.h"
 #include "src/logic/mapgenerator.h"
 
 namespace LFD {
 
 namespace slagavallen {
-
-struct TerrainMaterial {
-	~TerrainMaterial();
-
-	QSGTexture* texture;
-};
-
-class TerrainShader : public QSGSimpleMaterialShader<TerrainMaterial> {
-	static QSGMaterialShader* createShader() { return new TerrainShader; }
-
-public:
-	explicit TerrainShader();
-	static QSGSimpleMaterial<TerrainMaterial>* createMaterial();
-
-	QList<QByteArray> attributes() const override;
-	void updateState(const TerrainMaterial* m, const TerrainMaterial*) override;
-	void resolveUniforms() override;
-
-protected:
-	int id_color = -1;
-	int id_texture = -1;
-	int id_textureSize = -1;
-};
 
 class TerrainNode : public QSGGeometryNode {
 public:

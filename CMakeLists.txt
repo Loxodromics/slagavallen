@@ -30,6 +30,7 @@ set(SOURCES
 	src/main.cpp
 	src/graphic/backgroundnode.cpp
 	src/graphic/gameworlditem.cpp
+	src/graphic/terrainmaterial.cpp
 	src/graphic/terrainnode.cpp
 	src/graphic/textureatlas.cpp
 	src/logic/map.cpp

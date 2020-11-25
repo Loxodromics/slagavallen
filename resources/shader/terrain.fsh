@@ -1,11 +1,9 @@
-uniform sampler2D texture;
-uniform lowp float qt_Opacity;
-uniform lowp vec4 sunPosition;
+uniform highp sampler2D source;
+uniform highp float qt_Opacity;
+varying highp vec2 qt_TexCoord;
 
-varying highp vec2 vTexCoord;
-
-void main()
-{
-	lowp vec4 c = texture2D(texture, vTexCoord);
-	gl_FragColor = c * qt_Opacity;
+void main() {
+	highp vec4 p = texture2D(source, qt_TexCoord);
+	highp float a = qt_Opacity * p.a;
+	gl_FragColor = vec4(p.rgb * a, a);
 }

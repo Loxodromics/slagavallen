@@ -7,7 +7,6 @@
  *  Licensed under GPL-3.0, see LICENSE file.
  */
 #include "terrainnode.h"
-#include "textureatlas.h"
 
 #include "qmath.h"
 #include <QtCore/QRandomGenerator>
@@ -31,25 +30,20 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	this->m_geometry->setDrawingMode(GL_QUADS);
 	this->setFlag(OwnsGeometry, true);
 
-//	this->setMaterial(&m_material);
-
-	QImage image;
-	image.load(":/resources/textures/grass.png");
-	QSGTexture* texture = window->createTextureFromImage(image);
+	QImage textureImage;
+	textureImage.load(":/resources/textures/grass.png");
+	QSGTexture* texture = window->createTextureFromImage(textureImage);
 	texture->setFiltering(QSGTexture::Nearest);
 	texture->setHorizontalWrapMode(QSGTexture::Repeat);
 	texture->setVerticalWrapMode(QSGTexture::Repeat);
 
-//	this->m_material.setTexture(texture);
+	TerrainMaterial* terrainMaterial = new TerrainMaterial;
+	terrainMaterial->setTexture(texture);
 
+	terrainMaterial->setFlag(QSGMaterial::Blending);
 
-	QSGSimpleMaterial<TerrainMaterial>* m = TerrainShader::createMaterial();
-	m->state()->texture = texture;
-
-	m->setFlag(QSGMaterial::Blending);
-
-	setMaterial(m);
-	setFlag(OwnsMaterial, true);
+	this->setMaterial(terrainMaterial);
+	this->setFlag(OwnsMaterial, true);
 	MapGenerator mapGenerator(1234, 5);
 	this->m_currentMap = mapGenerator.generateMap(32, 32);
 }
@@ -176,52 +170,6 @@ void TerrainNode::setTileMode(const TileMode& tileMode)
 {
 	this->m_tileMode = tileMode;
 	qDebug() << "tileMode: " << (int)this->m_tileMode;
-}
-
-TerrainMaterial::~TerrainMaterial() {
-	delete texture;
-}
-
-QSGSimpleMaterial<TerrainMaterial>* TerrainShader::createMaterial()
-{
-	return new QSGSimpleMaterial<TerrainMaterial>(createShader);
-}
-
-TerrainShader::TerrainShader()
-{
-	setShaderSourceFile(QOpenGLShader::Vertex, ":/resources/shader/terrain.vsh");
-	setShaderSourceFile(QOpenGLShader::Fragment, ":/resources/shader/terrain.fsh");
-}
-
-QList<QByteArray> TerrainShader::attributes() const
-{
-	return QList<QByteArray>() /*<< "aVertex"*/
-							   << "aTexCoord";
-}
-
-void TerrainShader::updateState(const TerrainMaterial* m, const TerrainMaterial*)
-{
-
-	// Set the color
-//	program()->setUniformValue(id_color, m->color);
-
-	// Bind the texture and set program to use texture unit 0 (the default)
-	m->texture->bind();
-
-	// Then set the texture size so we can adjust the texture coordinates accordingly in the
-	// vertex shader..
-	QSize s = m->texture->textureSize();
-	program()->setUniformValue(id_textureSize, QSizeF(1.0 / s.width(), 1.0 / s.height()));
-}
-
-void TerrainShader::resolveUniforms()
-{
-	id_texture = program()->uniformLocation("texture");
-	id_textureSize = program()->uniformLocation("textureSize");
-	id_color = program()->uniformLocation("color");
-
-	// We will only use texture unit 0, so set it only once.
-	program()->setUniformValue(id_texture, 0);
 }
 
 }	// namespace slagavallen

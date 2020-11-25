@@ -1,12 +1,9 @@
-attribute highp vec4 aVertex;
-attribute highp vec2 aTexCoord;
-
 uniform highp mat4 qt_Matrix;
-uniform highp vec2 textureSize;
-
-varying highp vec2 vTexCoord;
+attribute highp vec4 qt_VertexPosition;
+attribute highp vec2 qt_VertexTexCoord;
+varying highp vec2 qt_TexCoord;
 
 void main() {
-	gl_Position = qt_Matrix * aVertex;
-	vTexCoord = aVertex.xy * textureSize;
+	qt_TexCoord = qt_VertexTexCoord;
+	gl_Position = qt_Matrix * qt_VertexPosition;
 }
