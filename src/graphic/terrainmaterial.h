@@ -7,9 +7,9 @@
  */
 #pragma once
 
+#include <QSGGeometry>
 #include <QSGMaterial>
 #include <QSGTexture>
-#include <QSGGeometry>
 
 namespace LFD {
 
@@ -41,35 +41,32 @@ private:
 
 class TerrainGeometry : public QSGGeometry {
 public:
-	explicit TerrainGeometry(int vertexCount,
-			int indexCount = 0,
-			int indexType = UnsignedShortType);
+	explicit TerrainGeometry(int vertexCount, int indexCount = 0, int indexType = UnsignedShortType);
 
-struct TexturedNormalPoint2D {
-	float x, y;
-	float tx, ty;
-	float nx, ny;
-	void set(float _x, float _y, float _tx, float _ty, float _nx, float _ny)
-	{
-		x = _x;
-		y = _y;
-		tx = _tx;
-		ty = _ty;
-		nx = _nx;
-		ny = _ny;
+	struct TexturedNormalPoint2D {
+		float x, y;
+		float tx, ty;
+		float nx, ny;
+		void set(float _x, float _y, float _tx, float _ty, float _nx, float _ny)
+		{
+			x = _x;
+			y = _y;
+			tx = _tx;
+			ty = _ty;
+			nx = _nx;
+			ny = _ny;
+		}
+	};
+
+	inline const TerrainGeometry::TexturedNormalPoint2D* vertexDataAsTexturedNormalPoint2D() const {
+		return static_cast<const TexturedNormalPoint2D*>(QSGGeometry::vertexData());
 	}
-};
 
-inline const TerrainGeometry::TexturedNormalPoint2D* vertexDataAsTexturedNormalPoint2D() const {
-	return static_cast<const TexturedNormalPoint2D*>(QSGGeometry::vertexData());
-}
+	inline TerrainGeometry::TexturedNormalPoint2D* vertexDataAsTexturedNormalPoint2D() {
+		return static_cast<TexturedNormalPoint2D*>(QSGGeometry::vertexData());
+	}
 
-inline TerrainGeometry::TexturedNormalPoint2D* vertexDataAsTexturedNormalPoint2D() {
-	return static_cast<TexturedNormalPoint2D*>(QSGGeometry::vertexData());
-}
-
-const QSGGeometry::AttributeSet& defaultAttributes_TexturedNormalPoint2D();
-
+	const QSGGeometry::AttributeSet& defaultAttributes_TexturedNormalPoint2D();
 };
 
 }	// namespace slagavallen

@@ -25,7 +25,6 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	, m_textureAtlas()
 	, m_tileMode(TileMode::RectFlat)
 {
-//	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
 	this->m_geometry = new TerrainGeometry(4);
 	this->setGeometry(m_geometry);
 	this->m_geometry->setDrawingMode(GL_QUADS);
