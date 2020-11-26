@@ -30,7 +30,7 @@ TerrainMaterialShader::TerrainMaterialShader()
 
 char const* const* TerrainMaterialShader::attributeNames() const
 {
-	static char const* const attr[] = { "qt_VertexPosition", "qt_VertexTexCoord", 0 };
+	static char const* const attr[] = { "qt_VertexPosition", "qt_VertexTexCoord", "vertexNormal", 0 };
 	return attr;
 }
 
@@ -88,6 +88,23 @@ QSGMaterialType* TerrainMaterial::type() const {
 
 QSGMaterialShader* TerrainMaterial::createShader() const {
 	return new TerrainMaterialShader;
+}
+
+TerrainGeometry::TerrainGeometry(int vertexCount, int indexCount, int indexType)
+	: QSGGeometry(TerrainGeometry::defaultAttributes_TexturedNormalPoint2D(), vertexCount, indexCount, indexType)
+{
+
+}
+
+const QSGGeometry::AttributeSet& TerrainGeometry::defaultAttributes_TexturedNormalPoint2D()
+{
+	static Attribute data[] = {
+		Attribute::createWithAttributeType(0, 2, FloatType, PositionAttribute),
+		Attribute::createWithAttributeType(1, 2, FloatType, TexCoordAttribute),
+		Attribute::createWithAttributeType(2, 2, FloatType, TexCoordAttribute)
+	};
+	static AttributeSet attrs = { 3, sizeof(float) * 6, data };
+	return attrs;
 }
 
 }	// namespace slagavallen

@@ -1,6 +1,7 @@
 uniform highp sampler2D source;
 uniform highp float qt_Opacity;
 varying highp vec2 qt_TexCoord;
+varying highp vec2 normal;
 
 void main() {
 	highp vec4 p = texture2D(source, qt_TexCoord);

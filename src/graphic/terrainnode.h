@@ -43,18 +43,18 @@ public:
 
 protected:
 	TerrainMaterial m_material;
-	QSGGeometry* m_geometry;
+	TerrainGeometry* m_geometry;
 	QPointF m_offset;
 	std::shared_ptr<Map> m_currentMap;
 	TextureAtlas m_textureAtlas;
 	TileMode m_tileMode;
 
 	void drawTile(
-	  unsigned int i_v, unsigned int i_h, QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
+	  unsigned int i_v, unsigned int i_h, TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 	void drawTileRectFlat(std::shared_ptr<Tile> tile, unsigned int i_v, unsigned int i_h,
-	  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
+	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 	void drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_v, int unsigned i_h,
-	  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY);
+	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 };
 
 }	// namespace slagavallen

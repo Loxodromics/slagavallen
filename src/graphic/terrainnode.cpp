@@ -25,7 +25,8 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 	, m_textureAtlas()
 	, m_tileMode(TileMode::RectFlat)
 {
-	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
+//	this->m_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
+	this->m_geometry = new TerrainGeometry(4);
 	this->setGeometry(m_geometry);
 	this->m_geometry->setDrawingMode(GL_QUADS);
 	this->setFlag(OwnsGeometry, true);
@@ -49,7 +50,7 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 }
 
 void TerrainNode::drawTile(
-  unsigned int i_h, unsigned int i_v, QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY)
+  unsigned int i_h, unsigned int i_v, TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY)
 {
 	auto currentTile = this->m_currentMap->getTile(i_v, i_h);
 	switch (this->m_tileMode) {
@@ -69,7 +70,7 @@ void TerrainNode::drawTile(
 }
 
 void TerrainNode::drawTileRectFlat(std::shared_ptr<LFD::slagavallen::Tile> tile, unsigned int i_h, unsigned int i_v,
-  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY)
+  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY)
 {
 	Q_UNUSED(tile);
 
@@ -82,24 +83,28 @@ void TerrainNode::drawTileRectFlat(std::shared_ptr<LFD::slagavallen::Tile> tile,
 		vertices[i * 4].set(dh, dv,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0),
+							0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1),
+								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
 		vertices[i * 4 + 2].set(dh + GRID_SIZE, dv + GRID_SIZE,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2),
+								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
 		vertices[i * 4 + 3].set(dh, dv + GRID_SIZE,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3),
+								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
 	}
 }
 
 void TerrainNode::drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_h, unsigned int i_v,
-  QSGGeometry::TexturedPoint2D* vertices, double offsetX, double offsetY)
+  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY)
 {
 	double dh = (-static_cast<double>(i_v) * GRID_SIZE + (i_h * GRID_SIZE) + offsetX);
 	double dv = ((0.5f * i_v * GRID_SIZE) + (0.5f * i_h * GRID_SIZE) + offsetY);
@@ -112,19 +117,23 @@ void TerrainNode::drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_h, 
 		vertices[i * 4].set(dh, dv + heightFactor * tile->height[0],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0),
+				1.0f, 1.0f);
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * tile->height[1],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1),
+				1.0f, 1.0f);
 		vertices[i * 4 + 2].set(dh, dv + GRID_SIZE + heightFactor * tile->height[2],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2),
+				1.0f, 1.0f);
 		vertices[i * 4 + 3].set(dh - GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * tile->height[3],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
-		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3));
+		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3),
+				1.0f, 1.0f);
 	}
 }
 
@@ -135,7 +144,7 @@ void TerrainNode::setRect(const QRectF& rect)
 	int tilesCount = (this->m_currentMap->width() + 1) * (this->m_currentMap->height() + 1) * 4;
 	this->m_geometry->allocate(tilesCount);
 
-	QSGGeometry::TexturedPoint2D* vertices = m_geometry->vertexDataAsTexturedPoint2D();
+	TerrainGeometry::TexturedNormalPoint2D* vertices = m_geometry->vertexDataAsTexturedNormalPoint2D();
 
 	/// draw the whole world, not trying to figure out what is visible and what not
 	for (unsigned int i_v = 0; i_v < this->m_currentMap->width(); ++i_v) {
