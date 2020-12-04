@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include <QVector3D>
 
 namespace LFD {
 
@@ -33,12 +34,13 @@ public:
 		NumRotation
 	};
 
-	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, std::vector<double> height);
+	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, std::vector<double> height, std::vector<QVector3D*> normal);
 
 	unsigned int id;
 	TerrainType terrainType;
 	Rotation rotation;
 	std::vector<double> height;
+	std::vector<QVector3D*> normal;
 
 	/// Ideas:
 	/// layer

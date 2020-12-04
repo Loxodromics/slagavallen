@@ -101,9 +101,9 @@ const QSGGeometry::AttributeSet& TerrainGeometry::defaultAttributes_TexturedNorm
 	static Attribute data[] = {
 		Attribute::createWithAttributeType(0, 2, FloatType, PositionAttribute),
 		Attribute::createWithAttributeType(1, 2, FloatType, TexCoordAttribute),
-		Attribute::createWithAttributeType(2, 2, FloatType, TexCoordAttribute)
+		Attribute::createWithAttributeType(2, 3, FloatType, TexCoordAttribute)
 	};
-	static AttributeSet attrs = { 3, sizeof(float) * 6, data };
+	static AttributeSet attrs = { 3, sizeof(float) * 7, data };
 	return attrs;
 }
 

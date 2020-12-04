@@ -12,11 +12,12 @@ namespace LFD {
 
 namespace slagavallen {
 
-Tile::Tile(unsigned int id, Tile::TerrainType terrainType, Tile::Rotation rotation, std::vector<double> height)
+Tile::Tile(unsigned int id, Tile::TerrainType terrainType, Tile::Rotation rotation, std::vector<double> height, std::vector<QVector3D*> normal)
 	: id(id)
 	, terrainType(terrainType)
 	, rotation(rotation)
 	, height(height)
+	, normal(normal)
 {
 
 }

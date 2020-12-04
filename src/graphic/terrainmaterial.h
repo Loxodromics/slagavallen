@@ -46,8 +46,8 @@ public:
 	struct TexturedNormalPoint2D {
 		float x, y;
 		float tx, ty;
-		float nx, ny;
-		void set(float _x, float _y, float _tx, float _ty, float _nx, float _ny)
+		float nx, ny, nz;
+		void set(float _x, float _y, float _tx, float _ty, float _nx, float _ny, float _nz)
 		{
 			x = _x;
 			y = _y;
@@ -55,6 +55,17 @@ public:
 			ty = _ty;
 			nx = _nx;
 			ny = _ny;
+			nz = _nz;
+		}
+		void set(float _x, float _y, float _tx, float _ty, QVector3D* _normal)
+		{
+			x = _x;
+			y = _y;
+			tx = _tx;
+			ty = _ty;
+			nx = _normal->x();
+			ny = _normal->y();
+			nz = _normal->z();
 		}
 	};
 

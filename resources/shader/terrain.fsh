@@ -1,10 +1,10 @@
 uniform highp sampler2D source;
 uniform highp float qt_Opacity;
 varying highp vec2 qt_TexCoord;
-varying highp vec2 normal;
+varying highp vec3 normal;
 
 void main() {
 	highp vec4 p = texture2D(source, qt_TexCoord);
 	highp float a = qt_Opacity * p.a;
-	gl_FragColor = vec4(p.rgb * a, a);
+	gl_FragColor = vec4(p.rgb * normal.x, a);
 }

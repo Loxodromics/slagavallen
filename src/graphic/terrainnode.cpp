@@ -83,22 +83,22 @@ void TerrainNode::drawTileRectFlat(std::shared_ptr<LFD::slagavallen::Tile> tile,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0),
-							0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
+		  this->m_currentMap->getTile(index)->normal[0]);
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1),
-								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
+		  this->m_currentMap->getTile(index)->normal[1]);
 		vertices[i * 4 + 2].set(dh + GRID_SIZE, dv + GRID_SIZE,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2),
-								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
+		  this->m_currentMap->getTile(index)->normal[2]);
 		vertices[i * 4 + 3].set(dh, dv + GRID_SIZE,
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3),
-								0.01 * QRandomGenerator::global()->bounded(0, 100), 1.0f);
+		  this->m_currentMap->getTile(index)->normal[3]);
 	}
 }
 
@@ -117,22 +117,22 @@ void TerrainNode::drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_h, 
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 0),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 0),
-				1.0f, 1.0f);
+		  this->m_currentMap->getTile(index)->normal[0]);
 		vertices[i * 4 + 1].set(dh + GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * tile->height[1],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 1),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 1),
-				1.0f, 1.0f);
+		  this->m_currentMap->getTile(index)->normal[1]);
 		vertices[i * 4 + 2].set(dh, dv + GRID_SIZE + heightFactor * tile->height[2],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 2),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 2),
-				1.0f, 1.0f);
+		  this->m_currentMap->getTile(index)->normal[2]);
 		vertices[i * 4 + 3].set(dh - GRID_SIZE, dv + (0.5f * GRID_SIZE) + heightFactor * tile->height[3],
 		  this->m_textureAtlas.textureCoordinates(
 			this->m_currentMap->getTile(index), TextureAtlas::Axis::Horizontal, 3),
 		  this->m_textureAtlas.textureCoordinates(this->m_currentMap->getTile(index), TextureAtlas::Axis::Vertical, 3),
-				1.0f, 1.0f);
+		  this->m_currentMap->getTile(index)->normal[3]);
 	}
 }
 
