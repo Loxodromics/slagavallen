@@ -6,13 +6,13 @@ This is a playground for tile rendering written in C++/Qt.
 
 It's a fun project, good for nothing.
 
-## Images
-<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-11-0.jpg" width="640px">
-<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-11-1.jpg" width="640px">
+## History in Images
+<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-12-05-0.jpg" width="640px">
+<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-23-0.jpg" width="640px">
 <img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-14-0.jpg" width="640px">
 <img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-14-1.jpg" width="640px">
-<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-23-0.jpg" width="640px">
-<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-12-05-0.jpg" width="640px">
+<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-11-0.jpg" width="640px">
+<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-11-1.jpg" width="640px">
 
 ## Build
 
