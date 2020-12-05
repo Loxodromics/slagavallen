@@ -12,6 +12,7 @@ It's a fun project, good for nothing.
 <img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-14-0.jpg" width="640px">
 <img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-14-1.jpg" width="640px">
 <img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-11-23-0.jpg" width="640px">
+<img src="https://github.com/Loxodromics/slagavallen/raw/master/screenshots/Screenshot-2020-12-05-0.jpg" width="640px">
 
 ## Build
 
