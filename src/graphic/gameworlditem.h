@@ -12,6 +12,7 @@
 #include <QtQuick/QSGGeometryNode>
 
 #include "terrainnode.h"
+#include "src/game/game.h"
 
 namespace LFD {
 
@@ -24,6 +25,8 @@ class GameWorldItem : public QQuickItem {
 	Q_OBJECT
 	QML_ELEMENT
 
+	Q_PROPERTY(Game* game READ game WRITE setGame NOTIFY gameChanged)
+
 public:
 	GameWorldItem();
 
@@ -35,12 +38,19 @@ public:
 	TerrainNode::TileMode tileMode() const;
 	Q_INVOKABLE void setTileMode(int tileMode);
 
+	Game* game() const;
+
+public slots:
+	void setGame(Game* game);
+
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
 	void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
+	Game* m_game;
 
 signals:
 	void tileModeChanged(TerrainNode::TileMode tileMode);
+	void gameChanged(Game* game);
 
 protected:
 	bool m_geometryChanged;

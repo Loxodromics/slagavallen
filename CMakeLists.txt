@@ -28,6 +28,7 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick LinguistTools REQUIRED)
 set(SOURCES
 	src/main.cpp
+	src/game/game.cpp
 	src/graphic/backgroundnode.cpp
 	src/graphic/gameworlditem.cpp
 	src/graphic/terrainmaterial.cpp

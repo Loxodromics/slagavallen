@@ -118,6 +118,20 @@ void GameWorldItem::setTileMode(int tileMode)
 	}
 }
 
+Game* GameWorldItem::game() const
+{
+	return this->m_game;
+}
+
+void GameWorldItem::setGame(Game* game)
+{
+	if (this->m_game == game)
+		return;
+
+	this->m_game = game;
+	emit gameChanged(this->m_game);
+}
+
 TerrainNode::TileMode GameWorldItem::tileMode() const
 {
 	return this->m_tileMode;
