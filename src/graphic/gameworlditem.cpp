@@ -9,7 +9,6 @@
 
 #include "gameworlditem.h"
 #include "backgroundnode.h"
-#include "src/logic/mapgenerator.h"
 
 #include <QDebug>
 
@@ -19,6 +18,7 @@ namespace slagavallen {
 
 GameWorldItem::GameWorldItem()
 	: m_geometryChanged(false),
+	  m_newGame(false),
 	  m_mouseDownPos(0.0f, 0.0f),
 	  m_gameWorldItemNode(nullptr),
 	  m_tileMode(TerrainNode::TileMode::RectFlat)
@@ -41,11 +41,18 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 	QRectF rect = boundingRect();
 
 	if (rect.isEmpty()) {
+		delete gameWorldItemNode->m_background;
+		delete gameWorldItemNode->m_terrain;
 		delete gameWorldItemNode;
 		return nullptr;
 	}
 
-	if (!gameWorldItemNode) {
+	if (!gameWorldItemNode || m_newGame) {
+		if (m_newGame) {
+			delete gameWorldItemNode->m_background;
+			delete gameWorldItemNode->m_terrain;
+			delete gameWorldItemNode;
+		}
 		gameWorldItemNode = new GameWorldItemNode();
 
 		gameWorldItemNode->m_background = new BackgroundNode(window());
@@ -53,6 +60,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_background);
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_terrain);
+		this->m_newGame = false;
 	}
 
 	if (m_geometryChanged) {
@@ -129,14 +137,25 @@ void GameWorldItem::setGame(Game* game)
 	if (this->m_game == game)
 		return;
 
+	auto oldGame = this->m_game;
+
 	this->m_game = game;
 	emit gameChanged(this->m_game);
 
 	if (this->game() != nullptr) {
-		MapGenerator mapGenerator(1234, 5);
-		auto map = mapGenerator.generateMap(32, 32);
-		this->game()->setCurrentMap(map);
+		QObject::connect(this->m_game, &Game::starteNewGame,
+						 this, &GameWorldItem::startedNewGame);
 	}
+	if (oldGame != nullptr) {
+		QObject::disconnect(oldGame, nullptr, this, nullptr);
+	}
+}
+
+void GameWorldItem::startedNewGame()
+{
+	this->m_newGame = true;
+	this->m_geometryChanged = true;
+	this->update();
 }
 
 TerrainNode::TileMode GameWorldItem::tileMode() const

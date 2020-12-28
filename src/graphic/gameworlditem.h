@@ -42,6 +42,7 @@ public:
 
 public slots:
 	void setGame(Game* game);
+	void startedNewGame();
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
@@ -54,6 +55,7 @@ signals:
 
 protected:
 	bool m_geometryChanged;
+	bool m_newGame;
 	QPointF m_mouseDownPos;
 	GameWorldItemNode* m_gameWorldItemNode;
 	TerrainNode::TileMode m_tileMode;

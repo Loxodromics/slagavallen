@@ -28,12 +28,26 @@ Window {
 
 
     ComboBox {
+        id: tileMode
         model: ["RectFlat", "RectIso", "HexFlat", "HexIso"]
         anchors.top: parent.top
         anchors.left: parent.left
 
         onActivated: {
             gameWorldItem.setTileMode(index);
+        }
+    }
+
+    Button {
+        id: newGame
+
+        anchors.top: tileMode.bottom
+        anchors.left: parent.left
+
+        text: "New Game"
+
+        onClicked: {
+            Game.newGame();
         }
     }
 }

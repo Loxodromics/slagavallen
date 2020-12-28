@@ -7,7 +7,6 @@
 */
 #pragma once
 
-#include <QObject>
 #include <vector>
 
 #include "tile.h"

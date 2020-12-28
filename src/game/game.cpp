@@ -6,16 +6,34 @@
  *  Copyright (c) 2020 Philipp Engelhard.
  *  Licensed under GPL-3.0, see LICENSE file.
 */
+#include <QtCore/QRandomGenerator>
+
 #include "game.h"
+#include "src/logic/mapgenerator.h"
 
 namespace LFD {
 
 namespace slagavallen {
 
 Game::Game(QObject* parent)
-	:QObject(parent)
+	: QObject(parent)
+	, m_seed(12345)
 {
+	this->newGame(12345);
+}
 
+void Game::newGame()
+{
+	this->newGame(QRandomGenerator::global()->bounded(99999));
+}
+void Game::newGame(unsigned int seed)
+{
+	this->setSeed(seed);
+	MapGenerator mapGenerator(this->m_seed, 5);
+	auto map = mapGenerator.generateMap(32, 32);
+	this->setCurrentMap(map);
+
+	emit starteNewGame();
 }
 
 std::shared_ptr<Map> Game::currentMap() const
@@ -26,6 +44,21 @@ std::shared_ptr<Map> Game::currentMap() const
 void Game::setCurrentMap(const std::shared_ptr<Map>& currentMap)
 {
 	m_currentMap = currentMap;
+}
+
+unsigned int Game::seed() const
+{
+	return m_seed;
+}
+
+void Game::setSeed(unsigned int seed)
+{
+	m_seed = seed;
+}
+
+void Game::changeChanges()
+{
+
 }
 
 }	/// namespace slagavallen
