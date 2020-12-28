@@ -16,7 +16,6 @@
 #include "terrainmaterial.h"
 #include "textureatlas.h"
 #include "src/logic/map.h"
-#include "src/logic/mapgenerator.h"
 
 namespace LFD {
 
@@ -32,7 +31,7 @@ public:
 		NumTileMode,
 	};
 
-	TerrainNode(QQuickWindow* window);
+	TerrainNode(QQuickWindow* window, std::shared_ptr<Map> map);
 
 	void setRect(const QRectF& rect);
 	void setOffset(const QPointF& offset);

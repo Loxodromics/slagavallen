@@ -9,6 +9,7 @@
 
 #include "gameworlditem.h"
 #include "backgroundnode.h"
+#include "src/logic/mapgenerator.h"
 
 #include <QDebug>
 
@@ -22,7 +23,7 @@ GameWorldItem::GameWorldItem()
 	  m_gameWorldItemNode(nullptr),
 	  m_tileMode(TerrainNode::TileMode::RectFlat)
 {
-	setFlag(ItemHasContents, true);
+	this->setFlag(ItemHasContents, true);
 }
 
 void GameWorldItem::geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry)
@@ -48,7 +49,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 		gameWorldItemNode = new GameWorldItemNode();
 
 		gameWorldItemNode->m_background = new BackgroundNode(window());
-		gameWorldItemNode->m_terrain = new TerrainNode(window());
+		gameWorldItemNode->m_terrain = new TerrainNode(window(), this->m_game->currentMap());
 
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_background);
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_terrain);
@@ -130,6 +131,12 @@ void GameWorldItem::setGame(Game* game)
 
 	this->m_game = game;
 	emit gameChanged(this->m_game);
+
+	if (this->game() != nullptr) {
+		MapGenerator mapGenerator(1234, 5);
+		auto map = mapGenerator.generateMap(32, 32);
+		this->game()->setCurrentMap(map);
+	}
 }
 
 TerrainNode::TileMode GameWorldItem::tileMode() const

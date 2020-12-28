@@ -22,6 +22,8 @@ Window {
         id: gameWorldItem
 
         anchors.fill: parent
+
+        game: Game
     }
 
 

@@ -18,12 +18,13 @@ namespace LFD {
 
 namespace slagavallen {
 
-TerrainNode::TerrainNode(QQuickWindow* window)
+TerrainNode::TerrainNode(QQuickWindow* window, std::shared_ptr<Map> map)
 	: m_material()
 	, m_geometry(nullptr)
 	, m_offset(QPointF(0.0f, 0.0f))
 	, m_textureAtlas()
-	, m_tileMode(TileMode::RectFlat)
+	, m_tileMode(TileMode::RectFlat),
+	  m_currentMap(map)
 {
 	this->m_geometry = new TerrainGeometry(4);
 	this->setGeometry(m_geometry);
@@ -44,8 +45,6 @@ TerrainNode::TerrainNode(QQuickWindow* window)
 
 	this->setMaterial(terrainMaterial);
 	this->setFlag(OwnsMaterial, true);
-	MapGenerator mapGenerator(1234, 5);
-	this->m_currentMap = mapGenerator.generateMap(32, 32);
 }
 
 void TerrainNode::drawTile(
