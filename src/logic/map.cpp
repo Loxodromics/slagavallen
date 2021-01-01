@@ -11,9 +11,10 @@ namespace LFD {
 
 namespace slagavallen {
 
-Map::Map(unsigned int width, unsigned int height)
+Map::Map(unsigned int width, unsigned int height, unsigned int tileSize)
 	: m_width(width)
 	, m_height(height)
+	, m_tileSize(tileSize)
 	, m_tiles()
 {
 	this->m_tiles.resize(width * height);
@@ -49,6 +50,16 @@ unsigned int Map::height() const
 unsigned int Map::size() const
 {
 	return this->m_width * this->m_height;
+}
+
+unsigned int Map::tileSize() const
+{
+	return this->m_tileSize;
+}
+
+void Map::setTileSize(unsigned int tileSize)
+{
+	this->m_tileSize = tileSize;
 }
 
 }	// namespace slagavallen

@@ -21,7 +21,7 @@ class MapGenerator
 public:
 	explicit MapGenerator(unsigned int seed, unsigned int octaves);
 
-	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height);
+	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height, unsigned int tileSize);
 	double elevationAt(const double x, const double y, const double z) const;
 	Tile::TerrainType terrainTypeAt(const double x, const double y, const double z);
 

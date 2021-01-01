@@ -87,9 +87,9 @@ QVector3D* MapGenerator::normalAt(const double x, const double y, const double z
 	return normal;
 }
 
-std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int height)
+std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int height, unsigned int tileSize)
 {
-	auto newMap = std::make_shared<Map>(width, height);
+	auto newMap = std::make_shared<Map>(width, height, tileSize);
 
 	/// randomly fill the world with tiles
 	for (unsigned int i_v = 0; i_v <= width; ++i_v) {

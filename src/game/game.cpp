@@ -32,7 +32,7 @@ void Game::newGame(unsigned int seed)
 {
 	this->setSeed(seed);
 	MapGenerator mapGenerator(this->m_seed, 5);
-	auto map = mapGenerator.generateMap(32, 32);
+	auto map = mapGenerator.generateMap(100, 100, 32);
 	this->setCurrentMap(map);
 
 	emit starteNewGame();
