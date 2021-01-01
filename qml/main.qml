@@ -34,7 +34,7 @@ Window {
         anchors.left: parent.left
 
         onActivated: {
-            gameWorldItem.setTileMode(index);
+            Game.setTileMode(index);
         }
     }
 

@@ -28,21 +28,21 @@ class GameWorldItem : public QQuickItem {
 	Q_PROPERTY(Game* game READ game WRITE setGame NOTIFY gameChanged)
 
 public:
-	GameWorldItem();
+	explicit GameWorldItem();
 
 	void mouseDoubleClickEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
-	TerrainNode::TileMode tileMode() const;
-	Q_INVOKABLE void setTileMode(int tileMode);
+	Game::TileMode tileMode() const;
 
 	Game* game() const;
 
 public slots:
 	void setGame(Game* game);
 	void startedNewGame();
+	void setTileMode(Game::TileMode tileMode);
 
 protected:
 	QSGNode* updatePaintNode(QSGNode*, UpdatePaintNodeData*) override;
@@ -50,7 +50,7 @@ protected:
 	Game* m_game;
 
 signals:
-	void tileModeChanged(TerrainNode::TileMode tileMode);
+	void tileModeChanged(Game::TileMode tileMode);
 	void gameChanged(Game* game);
 
 protected:
@@ -58,7 +58,6 @@ protected:
 	bool m_newGame;
 	QPointF m_mouseDownPos;
 	GameWorldItemNode* m_gameWorldItemNode;
-	TerrainNode::TileMode m_tileMode;
 };
 
 class GameWorldItemNode : public QSGNode {

@@ -18,6 +18,7 @@ namespace slagavallen {
 Game::Game(QObject* parent)
 	: QObject(parent)
 	, m_seed(12345)
+	, m_tileMode(TileMode::RectFlat)
 {
 	this->newGame(12345);
 }
@@ -26,6 +27,7 @@ void Game::newGame()
 {
 	this->newGame(QRandomGenerator::global()->bounded(99999));
 }
+
 void Game::newGame(unsigned int seed)
 {
 	this->setSeed(seed);
@@ -56,9 +58,22 @@ void Game::setSeed(unsigned int seed)
 	m_seed = seed;
 }
 
-void Game::changeChanges()
+Game::TileMode Game::tileMode() const
 {
+	return this->m_tileMode;
+}
 
+void Game::setTileMode(const Game::TileMode& tileMode)
+{
+	this->m_tileMode = tileMode;
+
+	emit tileModeChanged(this->m_tileMode);
+}
+
+void Game::setTileMode(const int tileMode)
+{
+	Game::TileMode newTileMode = static_cast<Game::TileMode>(tileMode);
+	this->setTileMode(newTileMode);
 }
 
 }	/// namespace slagavallen

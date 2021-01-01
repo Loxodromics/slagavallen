@@ -18,9 +18,17 @@ namespace slagavallen {
 class Game: public QObject
 {
 	Q_OBJECT
-public:
-	explicit Game(QObject* parent = nullptr);
 
+public:
+	enum class TileMode {
+		RectFlat,
+		RectIso,
+		HexFlat,
+		HexIso,
+		NumTileMode,
+	};
+
+	explicit Game(QObject* parent = nullptr);
 
 	Q_INVOKABLE void newGame();
 	void newGame(unsigned int seed);
@@ -31,15 +39,18 @@ public:
 	unsigned int seed() const;
 	void setSeed(unsigned int seed);
 
+	TileMode tileMode() const;
+	void setTileMode(const TileMode& tileMode);
+	Q_INVOKABLE void setTileMode(const int tileMode);
+
 signals:
 	void starteNewGame();
-
-public slots:
-	void changeChanges();
+	void tileModeChanged(Game::TileMode tileMode);
 
 protected:
 	std::shared_ptr<Map> m_currentMap;
 	unsigned int m_seed;
+	TileMode m_tileMode;
 };
 
 }	/// namespace slagavallen

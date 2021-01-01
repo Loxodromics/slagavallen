@@ -16,6 +16,7 @@
 #include "terrainmaterial.h"
 #include "textureatlas.h"
 #include "src/logic/map.h"
+#include "src/game/game.h"
 
 namespace LFD {
 
@@ -23,30 +24,18 @@ namespace slagavallen {
 
 class TerrainNode : public QSGGeometryNode {
 public:
-	enum class TileMode {
-		RectFlat,
-		RectIso,
-		HexFlat,
-		HexIso,
-		NumTileMode,
-	};
-
-	TerrainNode(QQuickWindow* window, std::shared_ptr<Map> map);
+	TerrainNode(QQuickWindow* window, Game* game);
 
 	void setRect(const QRectF& rect);
 	void setOffset(const QPointF& offset);
 	void addOffset(const QPointF& offset);
 
-	TileMode tileMode() const;
-	void setTileMode(const TileMode& tileMode);
-
 protected:
 	TerrainMaterial m_material;
 	TerrainGeometry* m_geometry;
 	QPointF m_offset;
-	std::shared_ptr<Map> m_currentMap;
 	TextureAtlas m_textureAtlas;
-	TileMode m_tileMode;
+	Game* m_game;
 
 	void drawTile(
 	  unsigned int i_v, unsigned int i_h, TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);

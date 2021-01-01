@@ -17,11 +17,10 @@ namespace LFD {
 namespace slagavallen {
 
 GameWorldItem::GameWorldItem()
-	: m_geometryChanged(false),
-	  m_newGame(false),
-	  m_mouseDownPos(0.0f, 0.0f),
-	  m_gameWorldItemNode(nullptr),
-	  m_tileMode(TerrainNode::TileMode::RectFlat)
+	: m_geometryChanged(false)
+	,  m_newGame(false)
+	,  m_mouseDownPos(0.0f, 0.0f)
+	,  m_gameWorldItemNode(nullptr)
 {
 	this->setFlag(ItemHasContents, true);
 }
@@ -56,7 +55,7 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 		gameWorldItemNode = new GameWorldItemNode();
 
 		gameWorldItemNode->m_background = new BackgroundNode(window());
-		gameWorldItemNode->m_terrain = new TerrainNode(window(), this->m_game->currentMap());
+		gameWorldItemNode->m_terrain = new TerrainNode(window(), this->m_game);
 
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_background);
 		gameWorldItemNode->appendChildNode(gameWorldItemNode->m_terrain);
@@ -109,18 +108,10 @@ void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 //	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
-void GameWorldItem::setTileMode(int tileMode)
+void GameWorldItem::setTileMode(Game::TileMode tileMode)
 {
-	TerrainNode::TileMode newTileMode = static_cast<TerrainNode::TileMode>(tileMode);
-	if (this->m_tileMode == newTileMode)
-		return;
-
-	this->m_tileMode = newTileMode;
-	emit tileModeChanged(this->m_tileMode);
-
 	if (this->m_gameWorldItemNode != nullptr) {
 		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
-			this->m_gameWorldItemNode->m_terrain->setTileMode(this->m_tileMode);
 			this->m_geometryChanged = true;
 			this->update();
 		}
@@ -145,6 +136,9 @@ void GameWorldItem::setGame(Game* game)
 	if (this->game() != nullptr) {
 		QObject::connect(this->m_game, &Game::starteNewGame,
 						 this, &GameWorldItem::startedNewGame);
+
+		QObject::connect(this->m_game, &Game::tileModeChanged,
+						 this, &GameWorldItem::setTileMode);
 	}
 	if (oldGame != nullptr) {
 		QObject::disconnect(oldGame, nullptr, this, nullptr);
@@ -158,9 +152,9 @@ void GameWorldItem::startedNewGame()
 	this->update();
 }
 
-TerrainNode::TileMode GameWorldItem::tileMode() const
+Game::TileMode GameWorldItem::tileMode() const
 {
-	return this->m_tileMode;
+	return this->m_game->tileMode();
 }
 
 }	/// namespace slagavallen
