@@ -29,7 +29,7 @@ TerrainNode::TerrainNode(QQuickWindow* window, Game* game)
 	this->setFlag(OwnsGeometry, true);
 
 	QImage textureImage;
-	textureImage.load(":/resources/textures/grass.png");
+	textureImage.load(m_textureAtlas.textureUri());
 	QSGTexture* texture = window->createTextureFromImage(textureImage);
 	texture->setFiltering(QSGTexture::Nearest);
 	texture->setHorizontalWrapMode(QSGTexture::Repeat);
@@ -42,6 +42,8 @@ TerrainNode::TerrainNode(QQuickWindow* window, Game* game)
 
 	this->setMaterial(terrainMaterial);
 	this->setFlag(OwnsMaterial, true);
+
+	this->m_textureAtlas = TextureAtlas(QStringLiteral(":/resources/atlases/simple.atlas"), TextureAtlas::SaveFormat::Json);
 }
 
 void TerrainNode::drawTile(

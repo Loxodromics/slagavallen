@@ -18,9 +18,9 @@ namespace slagavallen {
 
 GameWorldItem::GameWorldItem()
 	: m_geometryChanged(false)
-	,  m_newGame(false)
-	,  m_mouseDownPos(0.0f, 0.0f)
-	,  m_gameWorldItemNode(nullptr)
+	, m_newGame(false)
+	, m_mouseDownPos(0.0f, 0.0f)
+	, m_gameWorldItemNode(nullptr)
 {
 	this->setFlag(ItemHasContents, true);
 }
@@ -76,14 +76,11 @@ QSGNode* GameWorldItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 void GameWorldItem::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	Q_UNUSED(event);
-//	qDebug() << event;
-//	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
 void GameWorldItem::mouseMoveEvent(QMouseEvent* event)
 {
-//	qDebug() << event;
-	if (this->m_gameWorldItemNode != nullptr && (event->buttons() & Qt::RightButton) ) {
+	if (this->m_gameWorldItemNode != nullptr && (event->buttons() & Qt::RightButton)) {
 		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
 			this->m_gameWorldItemNode->m_terrain->addOffset(event->screenPos() - this->m_mouseDownPos);
 			this->m_mouseDownPos = event->screenPos();
@@ -95,21 +92,19 @@ void GameWorldItem::mouseMoveEvent(QMouseEvent* event)
 
 void GameWorldItem::mousePressEvent(QMouseEvent* event)
 {
-//	qDebug() << event;
 	this->m_mouseDownPos = event->screenPos();
-//	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
 void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 {
 	Q_UNUSED(event);
-//	qDebug() << event;
 	this->m_mouseDownPos = QPointF();
-//	update();	// changing an attribute of the qquickitem and updating the scenegraph
 }
 
 void GameWorldItem::setTileMode(Game::TileMode tileMode)
 {
+	Q_UNUSED(tileMode)
+
 	if (this->m_gameWorldItemNode != nullptr) {
 		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
 			this->m_geometryChanged = true;
@@ -134,12 +129,11 @@ void GameWorldItem::setGame(Game* game)
 	emit gameChanged(this->m_game);
 
 	if (this->game() != nullptr) {
-		QObject::connect(this->m_game, &Game::starteNewGame,
-						 this, &GameWorldItem::startedNewGame);
+		QObject::connect(this->m_game, &Game::starteNewGame, this, &GameWorldItem::startedNewGame);
 
-		QObject::connect(this->m_game, &Game::tileModeChanged,
-						 this, &GameWorldItem::setTileMode);
+		QObject::connect(this->m_game, &Game::tileModeChanged, this, &GameWorldItem::setTileMode);
 	}
+
 	if (oldGame != nullptr) {
 		QObject::disconnect(oldGame, nullptr, this, nullptr);
 	}
@@ -152,10 +146,7 @@ void GameWorldItem::startedNewGame()
 	this->update();
 }
 
-Game::TileMode GameWorldItem::tileMode() const
-{
-	return this->m_game->tileMode();
-}
+Game::TileMode GameWorldItem::tileMode() const { return this->m_game->tileMode(); }
 
 }	/// namespace slagavallen
 

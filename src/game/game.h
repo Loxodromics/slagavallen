@@ -8,15 +8,14 @@
  */
 #pragma once
 
-#include <QObject>
 #include "src/logic/map.h"
+#include <QObject>
 
 namespace LFD {
 
 namespace slagavallen {
 
-class Game: public QObject
-{
+class Game : public QObject {
 	Q_OBJECT
 
 public:
