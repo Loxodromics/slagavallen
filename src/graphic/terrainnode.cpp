@@ -28,6 +28,10 @@ TerrainNode::TerrainNode(QQuickWindow* window, Game* game)
 	this->m_geometry->setDrawingMode(GL_QUADS);
 	this->setFlag(OwnsGeometry, true);
 
+//	this->m_textureAtlas.createAtlas(16, 128, 224, "overworld", TextureAtlas::SaveFormat::Json);
+//	this->m_textureAtlas.createAtlas(64, 128, 128, "grass", TextureAtlas::SaveFormat::Json);
+	this->m_textureAtlas = TextureAtlas(QStringLiteral(":/resources/atlases/overworld.json"), TextureAtlas::SaveFormat::Json);
+
 	QImage textureImage;
 	textureImage.load(m_textureAtlas.textureUri());
 	QSGTexture* texture = window->createTextureFromImage(textureImage);
@@ -42,8 +46,6 @@ TerrainNode::TerrainNode(QQuickWindow* window, Game* game)
 
 	this->setMaterial(terrainMaterial);
 	this->setFlag(OwnsMaterial, true);
-
-	this->m_textureAtlas = TextureAtlas(QStringLiteral(":/resources/atlases/simple.atlas"), TextureAtlas::SaveFormat::Json);
 }
 
 void TerrainNode::drawTile(

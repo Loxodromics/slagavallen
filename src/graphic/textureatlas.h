@@ -37,6 +37,8 @@ public:
 
 	double textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner) const;
 	const QString textureUri() const;
+	unsigned int size() const;
+	void createAtlas(unsigned int size, unsigned int textureWidth, unsigned int textureHeight, QString filename, SaveFormat saveFormat);
 
 	void read(const QJsonObject& json);
 	void write(QJsonObject& json) const;
@@ -47,12 +49,18 @@ protected:
 	double coordinate(QVector<double> textureCoordinates, Axis axis, unsigned int corner) const;
 
 	QVector<double> readVec4(QJsonArray& coordinatesArray);
+	QJsonArray writeVec4(QVector<double> vector);
 
 	QMap<Tile::TerrainType, QVector<double>> m_textureCoordinates;
 //	QMap<unsigned int, QVector<double>> m_textureCoordinates;
 
 	QString m_filename;
 	QString m_version;
+	unsigned int m_size;
+
+	unsigned int m_textureWidth;
+	unsigned int m_textureHeight;
+
 };
 
 }	/// namespace slagavallen

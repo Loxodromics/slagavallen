@@ -45,9 +45,6 @@ TextureAtlas::TextureAtlas(const QString uri, SaveFormat saveFormat)
 		: QJsonDocument(QCborValue::fromCbor(saveData).toMap().toJsonObject()));
 
 	this->read(loadDoc.object());
-
-//	QJsonObject json(uri);
-//	this->read(json);
 }
 
 double TextureAtlas::textureCoordinates(std::shared_ptr<Tile> tile, Axis axis, unsigned int corner) const
@@ -66,17 +63,21 @@ const QString TextureAtlas::textureUri() const
 void TextureAtlas::read(const QJsonObject& json)
 {
 	if (json.contains("version") && json["version"].isString()) {
-		m_version = json["version"].toString();
-		if (m_version != QStringLiteral("0.1"))
+		this->m_version = json["version"].toString();
+		if (this->m_version != QStringLiteral("0.1.0"))
 			return;
 	}
 
 	if (json.contains("texture_file") && json["texture_file"].isString())
-		m_filename = json["texture_file"].toString();
+		this->m_filename = json["texture_file"].toString();
+
+	if (json.contains("size") && json["size"].isDouble()) {
+		this->m_size = json["size"].toDouble();
+	}
 
 	if (json.contains("coordinates") && json["coordinates"].isArray()) {
 		QJsonArray coordinatesArray = json["coordinates"].toArray();
-		m_textureCoordinates.clear();
+		this->m_textureCoordinates.clear();
 		for (int coordinateIndex = 0; coordinateIndex < coordinatesArray.size(); ++coordinateIndex) {
 			if (coordinatesArray[coordinateIndex].isArray()) {
 				QJsonArray coordinateArray = coordinatesArray[coordinateIndex].toArray();
@@ -89,7 +90,22 @@ void TextureAtlas::read(const QJsonObject& json)
 
 void TextureAtlas::write(QJsonObject& json) const
 {
+	json["version"] = QStringLiteral("0.1.0");
+	json["texture_file"] = this->m_filename;
+	json["size"] = static_cast<double>(this->m_size);
 
+	QJsonArray coordinatesArray;
+	for (double h = 0; h < this->m_textureHeight; h += this->m_size) {
+		for (double w = 0; w < this->m_textureWidth; w += this->m_size) {
+			QJsonArray coordinates;
+			coordinates.append(w / this->m_textureWidth);
+			coordinates.append(h / this->m_textureHeight);
+			coordinates.append(w / this->m_textureWidth + static_cast<double>(m_size) / this->m_textureWidth);
+			coordinates.append(h / this->m_textureHeight + static_cast<double>(m_size) / this->m_textureHeight);
+			coordinatesArray.append(coordinates);
+		}
+	}
+	json["coordinates"] = coordinatesArray;
 }
 
 double TextureAtlas::rotatedTextureCoordinates(
@@ -142,6 +158,45 @@ QVector<double> TextureAtlas::readVec4(QJsonArray& coordinatesArray)
 		}
 	}
 	return vec;
+}
+
+QJsonArray TextureAtlas::writeVec4(QVector<double> vector)
+{
+	QJsonArray array;
+	for (double value : vector) {
+		array.append(value);
+	}
+	return array;
+}
+
+void TextureAtlas::createAtlas(unsigned int size, unsigned int textureWidth, unsigned int textureHeight, QString filename, SaveFormat saveFormat)
+{
+	this->m_size = size;
+	this->m_textureWidth = textureWidth;
+	this->m_textureHeight = textureHeight;
+	this->m_filename = filename;
+
+	QFile saveFile(saveFormat == SaveFormat::Json
+		? filename.append(QStringLiteral(".json"))
+		: filename.append(QStringLiteral(".dat")));
+
+	if (!saveFile.open(QIODevice::WriteOnly)) {
+		qWarning("Couldn't open save file.");
+		return;
+	}
+
+	QJsonObject atlasJsonObject;
+
+	this->write(atlasJsonObject);
+
+	saveFile.write(saveFormat == SaveFormat::Json
+		? QJsonDocument(atlasJsonObject).toJson()
+		: QCborValue::fromJsonValue(atlasJsonObject).toCbor());
+}
+
+unsigned int TextureAtlas::size() const
+{
+	return m_size;
 }
 
 }	/// namespace slagavallen

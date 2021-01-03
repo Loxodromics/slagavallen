@@ -1,6 +1,7 @@
 {
-    "version": 0.1,
+    "version": "0.1.0",
 	"texture_file": "grass.png",
+	"size": 64,
 
     "coordinates": [
 	    [ 0.0, 0.0, 0.0001, 0.0001 ],
