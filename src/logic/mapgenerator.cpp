@@ -47,7 +47,7 @@ double MapGenerator::elevationAt(const double x, const double y, const double z)
 	return elevation;
 }
 
-Tile::TerrainType MapGenerator::terrainTypeAt(const double x, const double y, const double z)
+unsigned int MapGenerator::terrainTypeAt(const double x, const double y, const double z)
 {
 
 	double newX = this->avoidZero(x) * 0.1;
@@ -62,9 +62,7 @@ Tile::TerrainType MapGenerator::terrainTypeAt(const double x, const double y, co
 	if (fract > 0.75)
 		fract = 0.75;
 
-	Tile::TerrainType terrainType = static_cast<Tile::TerrainType>(fract * 4 + 1);
-
-	return terrainType;
+	return static_cast<unsigned int>(fract * 4 + 1);
 }
 
 double MapGenerator::avoidZero(const double value) const

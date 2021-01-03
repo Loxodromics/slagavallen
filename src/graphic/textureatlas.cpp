@@ -21,11 +21,11 @@ namespace slagavallen {
 
 TextureAtlas::TextureAtlas()
 {
-	this->m_textureCoordinates.insert(Tile::TerrainType::None,  QVector<double> { 0.0f, 0.0f, 0.0001f, 0.0001f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass0, QVector<double> { 0.0f, 0.0f, 0.5f, 0.5f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass1, QVector<double> { 0.5f, 0.0f, 1.0f, 0.5f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass2, QVector<double> { 0.0f, 0.5f, 0.5f, 1.0f });
-	this->m_textureCoordinates.insert(Tile::TerrainType::Grass3, QVector<double> { 0.5f, 0.5f, 1.0f, 1.0f });
+	this->m_textureCoordinates.append(QVector<double> { 0.0f, 0.0f, 0.0001f, 0.0001f });
+	this->m_textureCoordinates.append(QVector<double> { 0.0f, 0.0f, 0.5f, 0.5f });
+	this->m_textureCoordinates.append(QVector<double> { 0.5f, 0.0f, 1.0f, 0.5f });
+	this->m_textureCoordinates.append(QVector<double> { 0.0f, 0.5f, 0.5f, 1.0f });
+	this->m_textureCoordinates.append(QVector<double> { 0.5f, 0.5f, 1.0f, 1.0f });
 	this->m_filename = "grass.png";
 }
 
@@ -82,7 +82,7 @@ void TextureAtlas::read(const QJsonObject& json)
 			if (coordinatesArray[coordinateIndex].isArray()) {
 				QJsonArray coordinateArray = coordinatesArray[coordinateIndex].toArray();
 				QVector<double> coordinate = this->readVec4(coordinateArray);
-				this->m_textureCoordinates.insert(static_cast<Tile::TerrainType>(coordinateIndex), coordinate);
+				this->m_textureCoordinates.insert(coordinateIndex, coordinate);
 			}
 		}
 	}

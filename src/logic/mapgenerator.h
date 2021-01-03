@@ -23,7 +23,7 @@ public:
 
 	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height, unsigned int tileSize);
 	double elevationAt(const double x, const double y, const double z) const;
-	Tile::TerrainType terrainTypeAt(const double x, const double y, const double z);
+	unsigned int terrainTypeAt(const double x, const double y, const double z);
 
 protected:
 	double avoidZero(const double value) const;

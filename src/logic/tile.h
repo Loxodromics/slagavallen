@@ -17,15 +17,6 @@ namespace slagavallen {
 
 class Tile {
 public:
-	enum class TerrainType {
-		None,
-		Grass0,
-		Grass1,
-		Grass2,
-		Grass3,
-		NumTerrainType
-	};
-
 	enum class Rotation {
 		Rot_0,
 		Rot_90,
@@ -34,10 +25,10 @@ public:
 		NumRotation
 	};
 
-	explicit Tile(unsigned int id, TerrainType terrainType, Rotation rotation, std::vector<double> height, std::vector<QVector3D*> normal);
+	explicit Tile(unsigned int id, unsigned int terrainType, Rotation rotation, std::vector<double> height, std::vector<QVector3D*> normal);
 
 	unsigned int id;
-	TerrainType terrainType;
+	unsigned int terrainType;
 	Rotation rotation;
 	std::vector<double> height;
 	std::vector<QVector3D*> normal;
@@ -48,6 +39,6 @@ public:
 	/// discovered
 };
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

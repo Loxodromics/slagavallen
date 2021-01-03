@@ -51,8 +51,7 @@ protected:
 	QVector<double> readVec4(QJsonArray& coordinatesArray);
 	QJsonArray writeVec4(QVector<double> vector);
 
-	QMap<Tile::TerrainType, QVector<double>> m_textureCoordinates;
-//	QMap<unsigned int, QVector<double>> m_textureCoordinates;
+	QVector<QVector<double>> m_textureCoordinates;
 
 	QString m_filename;
 	QString m_version;
