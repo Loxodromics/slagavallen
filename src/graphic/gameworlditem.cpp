@@ -101,6 +101,30 @@ void GameWorldItem::mouseReleaseEvent(QMouseEvent* event)
 	this->m_mouseDownPos = QPointF();
 }
 
+void GameWorldItem::keyPressEvent(QKeyEvent* event)
+{
+//	qDebug() << "keyPressEvent" << event;
+	QPointF offset{0.0f, 0.0f};
+	float diff = 20.0f;
+	/// this can only be one key at a time it seems...
+	if (event->key() == Qt::Key_Up)
+		offset.setY(offset.y() - diff);
+	if (event->key() == Qt::Key_Down)
+		offset.setY(offset.y() + diff);
+	if (event->key() == Qt::Key_Left)
+		offset.setX(offset.x() - diff);
+	if (event->key() == Qt::Key_Right)
+		offset.setX(offset.x() + diff);
+
+	if (this->m_gameWorldItemNode != nullptr) {
+		if (this->m_gameWorldItemNode->m_terrain != nullptr) {
+			this->m_gameWorldItemNode->m_terrain->addOffset(offset);
+			this->m_geometryChanged = true;
+			this->update();
+		}
+	}
+}
+
 void GameWorldItem::setTileMode(Game::TileMode tileMode)
 {
 	Q_UNUSED(tileMode)

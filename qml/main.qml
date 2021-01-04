@@ -24,6 +24,8 @@ Window {
         anchors.fill: parent
 
         game: Game
+
+        focus: true
     }
 
 
@@ -35,6 +37,7 @@ Window {
 
         onActivated: {
             Game.setTileMode(index);
+            gameWorldItem.focus = true
         }
     }
 
