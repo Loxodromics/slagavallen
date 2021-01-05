@@ -85,7 +85,7 @@ QVector3D* MapGenerator::normalAt(const double x, const double y, const double z
 	return normal;
 }
 
-std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int height, unsigned int tileSize)
+std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int height, unsigned int tileSize, Rotation rotation)
 {
 	auto newMap = std::make_shared<Map>(width, height, tileSize);
 
@@ -93,10 +93,13 @@ std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int 
 	for (unsigned int i_v = 0; i_v <= width; ++i_v) {
 		for (unsigned int i_h = 0; i_h <= height; ++i_h) {
 			unsigned int i = i_v * width + i_h;
-
+			Tile::Rotation rot = Tile::Rotation::Rot_0;
+			if (rotation == Rotation::Off) {
+				rot = static_cast<Tile::Rotation>(
+							QRandomGenerator::global()->bounded(static_cast<int>(Tile::Rotation::NumRotation)));
+			}
 			auto tile = std::make_shared<Tile>(i, terrainTypeAt(i_h, i_v, 0.0),
-			  static_cast<Tile::Rotation>(
-				QRandomGenerator::global()->bounded(static_cast<int>(Tile::Rotation::NumRotation))),
+			  rot,
 			  std::vector<double>({ elevationAt(i_h, i_v, 0.0), elevationAt(1.0 + i_h, i_v, 0.0),
 				elevationAt(1.0 + i_h, 1.0 + i_v, 0.0), elevationAt(i_h, 1.0 + i_v, 0.0) }),
 			  std::vector<QVector3D*>({ normalAt(i_h, i_v, 0.0), normalAt(1.0 + i_h, i_v, 0.0),
@@ -108,6 +111,6 @@ std::shared_ptr<Map> MapGenerator::generateMap(unsigned int width, unsigned int 
 	return newMap;
 }
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

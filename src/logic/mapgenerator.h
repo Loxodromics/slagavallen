@@ -19,9 +19,15 @@ namespace slagavallen {
 class MapGenerator
 {
 public:
+
+	enum class Rotation {
+		Off,
+		On,
+		NumRotation
+	};
 	explicit MapGenerator(unsigned int seed, unsigned int octaves);
 
-	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height, unsigned int tileSize);
+	std::shared_ptr<Map> generateMap(unsigned int width, unsigned int height, unsigned int tileSize, Rotation rotation);
 	double elevationAt(const double x, const double y, const double z) const;
 	unsigned int terrainTypeAt(const double x, const double y, const double z);
 
@@ -38,6 +44,6 @@ protected:
 	QVector3D* normalAt(const double x, const double y, const double z) const;
 };
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD
