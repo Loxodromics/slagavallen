@@ -45,6 +45,6 @@ protected:
 	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 };
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

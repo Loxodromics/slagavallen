@@ -26,6 +26,6 @@ protected:
 //	QSGGeometry m_geometry;
 };
 
-}
+}	/// namespace slagavallen
 
-}
+}	/// namespace LFD

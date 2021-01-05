@@ -108,6 +108,6 @@ void BackgroundNode::setRect(const QRectF& bounds)
 	markDirty(QSGNode::DirtyGeometry);
 }
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

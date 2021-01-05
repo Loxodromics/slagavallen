@@ -80,6 +80,6 @@ public:
 	const QSGGeometry::AttributeSet& defaultAttributes_TexturedNormalPoint2D();
 };
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

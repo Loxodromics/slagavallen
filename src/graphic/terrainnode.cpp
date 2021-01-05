@@ -171,6 +171,6 @@ void TerrainNode::addOffset(const QPointF& offset)
 	//	qDebug() << "offset: " << offset;
 }
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

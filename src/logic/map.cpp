@@ -62,6 +62,6 @@ void Map::setTileSize(unsigned int tileSize)
 	this->m_tileSize = tileSize;
 }
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

@@ -107,6 +107,6 @@ const QSGGeometry::AttributeSet& TerrainGeometry::defaultAttributes_TexturedNorm
 	return attrs;
 }
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD

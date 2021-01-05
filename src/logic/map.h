@@ -38,6 +38,6 @@ protected:
 
 };
 
-}	// namespace slagavallen
+}	/// namespace slagavallen
 
-}	// namespace LFD
+}	/// namespace LFD
