@@ -34,6 +34,7 @@ set(SOURCES
 	src/graphic/terrainmaterial.cpp
 	src/graphic/terrainnode.cpp
 	src/graphic/textureatlas.cpp
+	src/logic/hex.cpp
 	src/logic/map.cpp
 	src/logic/mapgenerator.cpp
 	src/logic/tile.cpp
