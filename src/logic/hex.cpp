@@ -6,7 +6,6 @@
  *  Copyright (c) 2021 Philipp Engelhard. All rights reserved.
  */
 #include "hex.h"
-#include <cmath>
 
 namespace LFD {
 
@@ -82,6 +81,47 @@ std::vector<Hex> hexLinedraw(Hex a, Hex b)
 		results.push_back(hex_round(hexLerp(aNudge, bNudge, step * i)));
 	}
 	return results;
+}
+
+QPointF hexToPixel(Layout layout, Hex h)
+{
+	Orientation M = layout.orientation;
+	QPointF size = layout.size;
+	QPointF origin = layout.origin;
+	double x = (M.f0 * h.q + M.f1 * h.r) * size.x();
+	double y = (M.f2 * h.q + M.f3 * h.r) * size.y();
+	return QPointF(x + origin.x(), y + origin.y());
+}
+
+FractionalHex pixelToHex(Layout layout, QPointF p)
+{
+	Orientation M = layout.orientation;
+	QPointF size = layout.size;
+	QPointF origin = layout.origin;
+	QPointF pt = QPointF((p.x() - origin.x()) / size.x(), (p.y() - origin.y()) / size.y());
+	double q = M.b0 * pt.x() + M.b1 * pt.y();
+	double r = M.b2 * pt.x() + M.b3 * pt.y();
+	return FractionalHex(q, r, -q - r);
+}
+
+QPointF hexCornerOffset(Layout layout, int corner)
+{
+	Orientation M = layout.orientation;
+	QPointF size = layout.size;
+	double angle = 2.0 * M_PI * (M.start_angle - corner) / 6.0;
+	return QPointF(size.x() * cos(angle), size.y() * sin(angle));
+}
+
+std::vector<QPointF> polygonCorners(Layout layout, Hex h)
+{
+	std::vector<QPointF> corners = {};
+	QPointF center = hexToPixel(layout, h);
+	for (int i = 0; i < 6; i++)
+	{
+		QPointF offset = hexCornerOffset(layout, i);
+		corners.push_back(QPointF(center.x() + offset.x(), center.y() + offset.y()));
+	}
+	return corners;
 }
 
 

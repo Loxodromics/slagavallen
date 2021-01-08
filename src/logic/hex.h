@@ -12,6 +12,7 @@
 
 #include <QPointF>
 #include <vector>
+#include <cmath>
 
 namespace LFD {
 
@@ -108,6 +109,16 @@ int hexDistance(Hex a, Hex b)
 
 FractionalHex hexLerp(FractionalHex a, FractionalHex b, double t);
 std::vector<Hex> hexLinedraw(Hex a, Hex b);
+
+const Orientation layout_pointy
+  = Orientation(sqrt(3.0), sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
+const Orientation layout_flat
+  = Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0);
+
+QPointF hexToPixel(Layout layout, Hex h);
+FractionalHex pixelToHex(Layout layout, QPointF p);
+QPointF hexCornerOffset(Layout layout, int corner);
+std::vector<QPointF> polygonCorners(Layout layout, Hex h);
 
 }	/// namespace slagavallen
 
