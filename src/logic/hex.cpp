@@ -124,6 +124,56 @@ std::vector<QPointF> polygonCorners(Layout layout, Hex h)
 	return corners;
 }
 
+Hex hexNeighbor(Hex hex, int direction)
+{
+	return hexAdd(hex, hexDirection(direction));
+}
+
+Hex hexDiagonalNeighbor(Hex hex, int direction)
+{
+	return hexAdd(hex, hexDiagonals[direction]);
+}
+
+Hex hexDirection(int direction)
+{
+	return hexDirections[direction];
+}
+
+Hex hexAdd(Hex a, Hex b)
+{
+	return Hex(a.q + b.q, a.r + b.r, a.s + b.s);
+}
+
+Hex hexSubtract(Hex a, Hex b)
+{
+	return Hex(a.q - b.q, a.r - b.r, a.s - b.s);
+}
+
+Hex hexScale(Hex a, int k)
+{
+	return Hex(a.q * k, a.r * k, a.s * k);
+}
+
+Hex hexRotateLeft(Hex a)
+{
+	return Hex(-a.s, -a.q, -a.r);
+}
+
+Hex hexRotateRight(Hex a)
+{
+	return Hex(-a.r, -a.s, -a.q);
+}
+
+int hexLength(Hex hex)
+{
+	return int((abs(hex.q) + abs(hex.r) + abs(hex.s)) / 2);
+}
+
+int hexDistance(Hex a, Hex b)
+{
+	return hexLength(hexSubtract(a, b));
+}
+
 
 }	/// namespace slagavallen
 

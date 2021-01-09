@@ -8,7 +8,10 @@
  *  Based on and big thanks to Amit Patel (@redblobgames)
  *  http://www.redblobgames.com/grids/hexagons/
  */
-#pragma once
+//#pragma once
+#ifndef HEX_H
+#define HEX_H
+
 
 #include <QPointF>
 #include <vector>
@@ -24,6 +27,14 @@ struct Hex {
 	const int s;
 	Hex(int q_, int r_, int s_);
 };
+
+//bool operator == (Hex a, Hex b) {
+//	return a.q == b.q && a.r == b.r && a.s == b.s;
+//}
+
+//bool operator != (Hex a, Hex b) {
+//	return !(a == b);
+//}
 
 struct FractionalHex
 {
@@ -55,57 +66,20 @@ struct Layout {
 	Layout(Orientation orientation_, QPointF size_, QPointF origin_);
 };
 
-Hex hexAdd(Hex a, Hex b)
-{
-	return Hex(a.q + b.q, a.r + b.r, a.s + b.s);
-}
-
-Hex hexSubtract(Hex a, Hex b)
-{
-	return Hex(a.q - b.q, a.r - b.r, a.s - b.s);
-}
-
-Hex hexScale(Hex a, int k)
-{
-	return Hex(a.q * k, a.r * k, a.s * k);
-}
-
-Hex hexRotateLeft(Hex a)
-{
-	return Hex(-a.s, -a.q, -a.r);
-}
-
-Hex hexRotateRight(Hex a)
-{
-	return Hex(-a.r, -a.s, -a.q);
-}
+Hex hexAdd(Hex a, Hex b);
+Hex hexSubtract(Hex a, Hex b);
+Hex hexScale(Hex a, int k);
+Hex hexRotateLeft(Hex a);
+Hex hexRotateRight(Hex a);
 
 const std::vector<Hex> hexDirections = {Hex(1, 0, -1), Hex(1, -1, 0), Hex(0, -1, 1), Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)};
-Hex hex_direction(int direction)
-{
-	return hexDirections[direction];
-}
-
-Hex hexNeighbor(Hex hex, int direction)
-{
-	return hexAdd(hex, hex_direction(direction));
-}
+Hex hexDirection(int direction);
+Hex hexNeighbor(Hex hex, int direction);
 
 const std::vector<Hex> hexDiagonals = {Hex(2, -1, -1), Hex(1, -2, 1), Hex(-1, -1, 2), Hex(-2, 1, 1), Hex(-1, 2, -1), Hex(1, 1, -2)};
-Hex hex_diagonal_neighbor(Hex hex, int direction)
-{
-	return hexAdd(hex, hexDiagonals[direction]);
-}
-
-int hexLength(Hex hex)
-{
-	return int((abs(hex.q) + abs(hex.r) + abs(hex.s)) / 2);
-}
-
-int hexDistance(Hex a, Hex b)
-{
-	return hexLength(hexSubtract(a, b));
-}
+Hex hexDiagonalNeighbor(Hex hex, int direction);
+int hexLength(Hex hex);
+int hexDistance(Hex a, Hex b);
 
 FractionalHex hexLerp(FractionalHex a, FractionalHex b, double t);
 std::vector<Hex> hexLinedraw(Hex a, Hex b);
@@ -123,3 +97,5 @@ std::vector<QPointF> polygonCorners(Layout layout, Hex h);
 }	/// namespace slagavallen
 
 }	/// namespace LFD
+
+#endif // HEX_H
