@@ -43,6 +43,8 @@ protected:
 	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 	void drawTileRectIso(std::shared_ptr<Tile> tile, unsigned int i_v, int unsigned i_h,
 	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
+	void drawTileHexFlat(std::shared_ptr<Tile> tile, unsigned int i_v, int unsigned i_h,
+	  TerrainGeometry::TexturedNormalPoint2D* vertices, double offsetX, double offsetY);
 };
 
 }	/// namespace slagavallen
